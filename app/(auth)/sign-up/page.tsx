@@ -80,14 +80,24 @@ export default function SignUp({
               <Button type="button" className="w-full" onClick={handleSubmit}>
                 Login
               </Button>
+            </div>
+            <div className="flex flex-col gap-y-4 mt-4">
               <Button 
-                onClick={() => {signIn("google", {callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL_AFTER_SIGN_IN})}} 
-                variant="outline" 
-                className="w-full"
-              >
-                <img src="/google.svg" alt="" className="h-6 w-6" />
-                Login with Google
-              </Button>
+                  onClick={() => {signIn("google", {callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL_AFTER_SIGN_IN})}} 
+                  variant="outline" 
+                  className="w-full"
+                >
+                  <img src="/google.svg" alt="" className="h-6 w-6" />
+                  Login with Google
+                </Button>
+                <Button 
+                  onClick={() => {signIn("github", {callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL_AFTER_SIGN_IN})}} 
+                  variant="outline" 
+                  className="w-full"
+                >
+                  <img src="/github.svg" alt="" className="h-6 w-6" />
+                  Login with GitHub
+                </Button>
             </div>
             <div className="mt-4 text-center text-sm">
               Already an account?{" "}
