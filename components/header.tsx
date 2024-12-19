@@ -3,10 +3,14 @@ import { useRouter } from "next/navigation";
 import { Logo } from "./logo";
 import { ModeToggle } from "./mode-toggle";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react"
+import { Button } from "./ui/button";
 
 const Header = () => {
 
     const router = useRouter()
+    const { data: session } = useSession()
+
 
     return ( 
         <header className=" fixed top-0 left-0 right-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md z-50">
@@ -18,9 +22,21 @@ const Header = () => {
                         <Link href="#pricing" className="hidden  sm:block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                             Pricing
                         </Link>
-                        <Link href="/signIn" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                            Sign in
-                        </Link>
+                        {session?.user?.name ? (
+                            <Button 
+                                variant={"destructive"}  
+                                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" 
+                                onClick={() => {
+                                    signOut({ callbackUrl: process.env.CALLBACK_URL_AFTER_SIGN_OUT })
+                                }}
+                            >
+                                Log Out
+                            </Button>
+                        ) : (
+                            <Link href="/sign-in" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                                Sign in
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
