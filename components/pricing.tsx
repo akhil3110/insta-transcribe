@@ -2,24 +2,23 @@ import { PricingCard } from "./pricing-card";
 
 const pricingPlans = [
     {
-      name: 'Basic',
-      price: '$9',
+      name: 'free',
+      price: '$0',
       features: [
-        'Up to 10 videos per month',
+        'Up to 2 videos per month',
         'Basic transcription accuracy',
         'Standard support',
-        'Export to TXT',
       ],
     },
     {
       name: 'Pro',
-      price: '$29',
+      price: '$20',
       features: [
         'Up to 50 videos per month',
         'Enhanced accuracy',
-        'Priority support',
-        'Export to multiple formats',
-        'Custom timestamps',
+        'Change color of text',
+        'Get Transcription file',
+        'Edit Transcripiom',
       ],
       popular: true,
     },
@@ -31,8 +30,7 @@ const pricingPlans = [
         'Highest accuracy',
         '24/7 support',
         'API access',
-        'Custom integration',
-        'Team collaboration',
+        'Custom integration'
       ],
     },
   ];
@@ -40,7 +38,7 @@ const pricingPlans = [
 const Pricing = () => {
 
     return ( 
-        <section id="pricing" className="py-20 bg-gradient-to-b from-white to-indigo-50 dark:from-gray-900 dark:to-gray-800">
+      <section id="pricing" className="py-20 bg-gradient-to-b from-white to-indigo-50 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Simple, Transparent Pricing</h2>

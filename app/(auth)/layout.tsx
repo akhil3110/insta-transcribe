@@ -1,3 +1,6 @@
+"use client"
+import Providers from "@/providers";
+
 const AuthLayout = ({
     children
 }: {

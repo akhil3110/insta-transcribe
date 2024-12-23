@@ -8,15 +8,15 @@ export default function Providers({
   children: React.ReactNode;
 }>) {
   return (
+    <SessionProvider>
     <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
     > 
-      <SessionProvider>
         {children}
-      </SessionProvider>
     </ThemeProvider>
+    </SessionProvider>
   );
 }

@@ -79,7 +79,7 @@ export default function SignUp({
               </div>
               <Button type="button" className="w-full" onClick={handleSubmit}>
                 Login
-              </Button>
+              </Button>clea
             </div>
             <div className="flex flex-col gap-y-4 mt-4">
               <Button 

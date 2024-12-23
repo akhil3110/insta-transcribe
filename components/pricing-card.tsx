@@ -31,7 +31,8 @@ export function PricingCard({ plan }: PricingCardProps) {
           <span className="text-gray-600 dark:text-gray-400">/month</span>
         </div>
       </div>
-      <ul className="mt-8 space-y-4">
+      <div className='h-full'>
+      <ul className="mt-8 space-y-4 h-[50%]">
         {plan.features.map((feature) => (
           <li key={feature} className="flex items-center">
             <Check className="h-5 w-5 text-indigo-600 mr-2" />
@@ -39,9 +40,10 @@ export function PricingCard({ plan }: PricingCardProps) {
           </li>
         ))}
       </ul>
-      <button className="mt-8 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+      <button className="flex mt-8 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
         Get Started
       </button>
+      </div>
     </div>
   );
 }
