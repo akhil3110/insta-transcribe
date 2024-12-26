@@ -35,7 +35,8 @@ export async function POST(req: Request) {
         console.log(url)
 
         return NextResponse.json({
-            url: URL
+            url: URL,
+            fileName: uniqueFileName
         })
        
     } catch (error) {

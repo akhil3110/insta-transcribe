@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Upload } from 'lucide-react';
 import axios from "axios"
+import { useRouter } from 'next/navigation';
 
 export interface UploadFormData {
   video: FileList;
@@ -10,10 +11,13 @@ export interface UploadFormData {
 
 const UploadSection = () => {
   const [isUploading, setIsUploading] = useState(false);
+  const [loading,setLoading] = useState(false)
   const[url,setUrl] = useState("")
+  const router = useRouter()
 
  const upload = async (e: any) =>{
   try {
+    setLoading(true)
     e.preventDefault();
     const file = e.target?.files[0]
 
@@ -28,6 +32,8 @@ const UploadSection = () => {
       headers: { 'Content-Type': file.type },
     });
 
+    setLoading(false)
+    router.push(`/videos/${presignedUrl.data.fileName  }`)
     console.log(res.status, "file uplaoded succesfully")
 
     console.log(presignedUrl.data)
@@ -35,6 +41,14 @@ const UploadSection = () => {
     console.log(error, "error")
   }
  }
+
+//  if(loading){
+//   return (
+//     <div className='absolute h-screen w-full flex justify-center items-center  bg-slate-500/25 text-white text-4xl font-extrabold'>
+//       Loading ...
+//     </div>
+//   )
+//  }
 
   return (
     <div className="relative max-w-md mx-auto"> 
@@ -47,6 +61,7 @@ const UploadSection = () => {
           <p className="text-xs text-gray-500 dark:text-[#E5E7EB]">MP4, MOV up to 500MB</p>
         </div>
         <input
+          disabled= {!!loading}
           type="file"
           className="hidden"
           accept="video/*"
