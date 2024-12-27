@@ -1,0 +1,128 @@
+"use client";
+import React, { useState } from "react";
+import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
+import {
+  IconArrowLeft,
+  IconBrandTabler,
+  IconSettings,
+  IconUserBolt,
+} from "@tabler/icons-react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { Smartphone } from "lucide-react";
+import { useSession } from "next-auth/react"
+
+
+const UserRoutesLayout = ({
+    children
+}: {
+    children: React.ReactNode
+}) => {
+
+    const links = [
+        {
+          label: "Dashboard",
+          href: "#",
+          icon: (
+            <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+          ),
+        },
+        {
+          label: "Profile",
+          href: "#",
+          icon: (
+            <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+          ),
+        },
+        {
+          label: "Settings",
+          href: "#",
+          icon: (
+            <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+          ),
+        },
+        {
+          label: "Logout",
+          href: "#",
+          icon: (
+            <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+          ),
+        },
+    ];
+
+    const [open,setOpen] = useState(false)
+    const { data: session } = useSession()
+
+    return ( 
+        <>
+            <Sidebar open={open} setOpen={setOpen}>
+                <SidebarBody className="justify-between gap-10">
+                    <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+                        {open ? <Logo /> : <LogoIcon />}
+                        <div className="mt-8 flex flex-col gap-2">
+                            {links.map((link, idx) => (
+                                <SidebarLink key={idx} link={link} />
+                            ))}
+                        </div>
+                    </div>
+                    <div>
+                        <SidebarLink
+                            link={{
+                                label: "Manu Arora",
+                                href: "#",
+                                icon: (
+                                    <Image
+                                        src="https://assets.aceternity.com/manu.png"
+                                        className="h-7 w-7 flex-shrink-0 rounded-full"
+                                        width={50}
+                                        height={50}
+                                        alt="Avatar"
+                                    />
+                                ),
+                            }}
+                        />
+                    </div>
+                </SidebarBody>
+            </Sidebar>
+            {children}
+        </>
+     );
+}
+ 
+export default UserRoutesLayout;
+
+export const Logo = () => {
+    return (
+      <Link
+        href="/"
+        className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+      >
+        <div className="relative">
+            <Smartphone className="w-6 h-6 text-indigo-600" />
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 rounded-full animate-pulse" />
+        </div>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="font-medium text-black dark:text-white whitespace-pre"
+        >
+          Insta Transcribe
+        </motion.span>
+      </Link>
+    );
+  };
+  export const LogoIcon = () => {
+    return (
+      <Link
+        href="#"
+        className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+      >
+        <div className="relative">
+            <Smartphone className="w-6 h-6 text-indigo-600" />
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 rounded-full animate-pulse" />
+        </div>
+      </Link>
+    );
+  };

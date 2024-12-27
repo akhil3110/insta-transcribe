@@ -5,6 +5,7 @@ import { ModeToggle } from "./mode-toggle";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react"
 import { Button } from "./ui/button";
+import toast from "react-hot-toast";
 
 const Header = () => {
 
@@ -28,12 +29,13 @@ const Header = () => {
                                 className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" 
                                 onClick={() => {
                                     signOut({ callbackUrl: process.env.CALLBACK_URL_AFTER_SIGN_OUT })
+                                    toast.success("LogOut Succesfull")
                                 }}
                             >
                                 Log Out
                             </Button>
                         ) : (
-                            <Link href="/sign-in" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                            <Link href="/sign-in" className="border text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                                 Sign in
                             </Link>
                         )}

@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import  {S3Client, GetObjectCommand, PutObjectCommand, ListObjectsV2Command, DeleteObjectCommand} from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { url } from "inspector";
+import prisma from "@/lib/prisma";
 
 
 
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
         }
 
         const uniqueFileName = `${session.user?.id}-${Date.now()}.${fileType.split("/")[1]}`;
-
+        
         const command  = new PutObjectCommand({
             Bucket: "bucket.akhilparmar.dev",
             Key: `${session.user?.email}/${uniqueFileName}`,
@@ -32,11 +33,18 @@ export async function POST(req: Request) {
     
         const URL = await getSignedUrl(s3, command)
 
-        console.log(url)
+        const video = await prisma.video.create({
+            data: {
+                fileName: uniqueFileName,
+                UserId: session.user?.id!
+            }
+        })
+        
 
         return NextResponse.json({
             url: URL,
-            fileName: uniqueFileName
+            fileName: uniqueFileName,
+            videoId: video.id  
         })
        
     } catch (error) {

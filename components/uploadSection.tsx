@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Upload } from 'lucide-react';
-import axios from "axios"
-import { useRouter } from 'next/navigation';
+import React, { useState } from "react";
+import { Upload } from "lucide-react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { toast } from "react-hot-toast";
 
 export interface UploadFormData {
   video: FileList;
@@ -11,47 +13,56 @@ export interface UploadFormData {
 
 const UploadSection = () => {
   const [isUploading, setIsUploading] = useState(false);
-  const [loading,setLoading] = useState(false)
-  const[url,setUrl] = useState("")
-  const router = useRouter()
+  const [loading, setLoading] = useState(false);
+  const [url, setUrl] = useState("");
+  const router = useRouter();
+  const { data: session } = useSession();
 
- const upload = async (e: any) =>{
-  try {
-    setLoading(true)
-    e.preventDefault();
-    const file = e.target?.files[0]
+  const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      if (!session) {
+        toast.error("Please log in first to upload a video.");
+        return;
+      }
 
-    const presignedUrl = await axios.post("/api/getPresignedUrl", {fileType:file.type})
+      setLoading(true);
+      e.preventDefault();
+      const file = e.target?.files?.[0];
+      if (!file) {
+        toast.error("No file selected.");
+        setLoading(false);
+        return;
+      }
 
-    console.log(presignedUrl.data.url)
-    setUrl(presignedUrl.data.url)
-    
-    const res = await fetch(presignedUrl.data.url, {
-      method: 'PUT',
-      body: file,
-      headers: { 'Content-Type': file.type },
-    });
+      const presignedUrl = await axios.post("/api/getPresignedUrl", {
+        fileType: file.type,
+      });
 
-    setLoading(false)
-    router.push(`/videos/${presignedUrl.data.fileName  }`)
-    console.log(res.status, "file uplaoded succesfully")
+      console.log(presignedUrl.data.url);
+      setUrl(presignedUrl.data.url);
 
-    console.log(presignedUrl.data)
-  } catch (error) {
-    console.log(error, "error")
-  }
- }
+      const res = await fetch(presignedUrl.data.url, {
+        method: "PUT",
+        body: file,
+        headers: { "Content-Type": file.type },
+      });
 
-//  if(loading){
-//   return (
-//     <div className='absolute h-screen w-full flex justify-center items-center  bg-slate-500/25 text-white text-4xl font-extrabold'>
-//       Loading ...
-//     </div>
-//   )
-//  }
+      setLoading(false);
+      if (res.ok) {
+        toast.success("File uploaded successfully!");
+        router.push(`/videos/${presignedUrl.data.videoId}`);
+      } else {
+        toast.error("Failed to upload the video.");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast.error("Something went wrong while uploading.");
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="relative max-w-md mx-auto"> 
+    <div className="relative max-w-md mx-auto">
       <label className="flex flex-col items-center justify-center md:mt-5 w-[300px] md:w-[500px] h-64 border-2 border-dashed border-gray-300 dark:border-[#1E293B] rounded-lg cursor-pointer bg-white dark:bg-[#1E293B] hover:bg-gray-50 dark:hover:bg-[#686b74] transition-colors">
         <div className="flex flex-col items-center justify-center pt-5 pb-6">
           <Upload className="w-12 h-12 text-[#6366F1] mb-4" />
@@ -61,7 +72,7 @@ const UploadSection = () => {
           <p className="text-xs text-gray-500 dark:text-[#E5E7EB]">MP4, MOV up to 500MB</p>
         </div>
         <input
-          disabled= {!!loading}
+          disabled={!!loading}
           type="file"
           className="hidden"
           accept="video/*"
