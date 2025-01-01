@@ -135,7 +135,9 @@ export const Logo = () => {
           animate={{ opacity: 1 }}
           className="font-medium text-black dark:text-white whitespace-pre"
         >
-          Insta Transcribe
+          <span className="text-xl font-bold text-gray-900 dark:text-white">
+            Insta<span className="text-indigo-600">Transcribe</span>
+          </span>
         </motion.span>
       </Link>
     );

@@ -2,6 +2,7 @@
 import { ThemeProvider } from "@/components/theme-provider"
 import { SessionProvider } from "next-auth/react"
 import { Toaster } from "react-hot-toast";
+import {RecoilRoot} from "recoil"
 
 export default function Providers({
   children,
@@ -17,7 +18,9 @@ export default function Providers({
             disableTransitionOnChange
     >
     <Toaster />
-      {children}
+      <RecoilRoot>
+        {children}
+      </RecoilRoot>
     </ThemeProvider>
     </SessionProvider>
   );

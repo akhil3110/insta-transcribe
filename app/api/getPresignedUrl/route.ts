@@ -3,8 +3,7 @@ import s3 from "@/lib/awsS3Client";
 import { NextResponse } from "next/server";
 import  {S3Client, GetObjectCommand, PutObjectCommand, ListObjectsV2Command, DeleteObjectCommand} from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { url } from "inspector";
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/db";
 
 
 
@@ -23,20 +22,36 @@ export async function POST(req: Request) {
             return new NextResponse("File type missing", { status: 400 });
         }
 
+        if (!session.user?.id) {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+
+        const user = await prisma.user.findFirst({
+            where:{
+                email: session.user.email!
+            }
+        })
+
+        if(!user){
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+
         const uniqueFileName = `${session.user?.id}-${Date.now()}.${fileType.split("/")[1]}`;
-        
+
         const command  = new PutObjectCommand({
             Bucket: "bucket.akhilparmar.dev",
             Key: `${session.user?.email}/${uniqueFileName}`,
             ContentType: fileType
         })
-    
+        
+        //@ts-ignore
         const URL = await getSignedUrl(s3, command)
+
 
         const video = await prisma.video.create({
             data: {
                 fileName: uniqueFileName,
-                UserId: session.user?.id!
+                UserId: user.id
             }
         })
         
@@ -44,11 +59,12 @@ export async function POST(req: Request) {
         return NextResponse.json({
             url: URL,
             fileName: uniqueFileName,
-            videoId: video.id  
+            videoId: video.id 
         })
        
     } catch (error) {
-        console.error("Error generating presigned URL:", error);
+        //@ts-ignore
+        console.error("Error:", error.message, error.stack);
         return new NextResponse("Internal Server Error", { status: 500 });
     }
 }
