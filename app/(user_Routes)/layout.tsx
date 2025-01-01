@@ -1,5 +1,5 @@
-"use client";
-import  { useState, useEffect } from "react";
+"use client"
+import  { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import {
   IconArrowLeft,
@@ -52,9 +52,7 @@ const UserRoutesLayout = ({
     const { data: session } = useSession()
     const router = useRouter()
     
-    useEffect(() =>{
-        console.log(session?.user?.image)
-    },[])
+   
 
     return ( 
         <div

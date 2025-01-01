@@ -18,9 +18,9 @@ export default function Providers({
             disableTransitionOnChange
     >
     <Toaster />
-      <RecoilRoot>
-        {children}
-      </RecoilRoot>
+        <RecoilRoot>
+          {children}
+        </RecoilRoot>
     </ThemeProvider>
     </SessionProvider>
   );

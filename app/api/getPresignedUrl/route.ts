@@ -36,11 +36,12 @@ export async function POST(req: Request) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
+        const folderName = `${session.user.email?.split('@')[0]}`
         const uniqueFileName = `${session.user?.id}-${Date.now()}.${fileType.split("/")[1]}`;
 
         const command  = new PutObjectCommand({
             Bucket: "bucket.akhilparmar.dev",
-            Key: `${session.user?.email}/${uniqueFileName}`,
+            Key: `${folderName}/${uniqueFileName}`,
             ContentType: fileType
         })
         

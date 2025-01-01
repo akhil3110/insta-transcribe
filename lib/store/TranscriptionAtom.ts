@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export const TranscriptionAtom = atom({
-    key: 'transcriptionState',
-    default: ''
+export const transcriptionAtom = atom({
+    key: "transcriptionState",
+    default: " "
 })

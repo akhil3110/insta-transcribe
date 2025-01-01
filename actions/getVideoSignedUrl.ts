@@ -8,10 +8,11 @@ export const getVideoSignedUrl =async (key: string) =>{
     try {
         
         const session = await auth();
+        const folderName = `${session?.user?.email?.split('@')[0]}`
 
         const command = new GetObjectCommand({
             Bucket: 'bucket.akhilparmar.dev',
-            Key: `${session?.user?.email!}/${key}`
+            Key: `${folderName}/${key}`
         })
 
         //@ts-ignore
