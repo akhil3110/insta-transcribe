@@ -1,4 +1,3 @@
-import { getTranscription } from "@/actions/getTranscription";
 import { getVideoDetails } from "@/actions/getVideoDetails";
 import { getVideoSignedUrl } from "@/actions/getVideoSignedUrl";
 
@@ -25,7 +24,8 @@ const VideoIdPage = async ({
     // Fetch signed URL for the video file
     const videoUrl = await getVideoSignedUrl(videoDetails.fileName);
 
-    const transcription = await getTranscription(videoDetails.fileName)
+    // const transcription = await getTranscription(videoDetails.fileName)
+    
     if (!videoUrl) {
       return <div>Error: Unable to generate signed URL for the video.</div>;
     }

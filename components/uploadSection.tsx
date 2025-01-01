@@ -6,6 +6,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
+import { StoreTranscription } from "@/actions/StoreTranscriptionFile";
+
 
 export interface UploadFormData {
   video: FileList;
@@ -46,6 +48,8 @@ const UploadSection = () => {
         body: file,
         headers: { "Content-Type": file.type },
       });
+
+      const transcription = await StoreTranscription(presignedUrl.data.fileName, session.user?.email!)
 
       setLoading(false);
       if (res.ok) {
