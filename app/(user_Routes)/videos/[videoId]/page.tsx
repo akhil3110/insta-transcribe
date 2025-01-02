@@ -4,19 +4,20 @@ import { getVideoSignedUrl } from "@/actions/getVideoSignedUrl";
 import TranscriptionItem from "@/components/transcription-item";
 import TranscriptionTable from "@/components/transcription-table";
 import { transcriptionAtom } from "@/lib/store/transcriptionAtom";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
 const VideoIdPage = async ({
   params,
 }: {
-  params: {
+  params: Promise<{
     videoId: string;
-  };
+  }>
 }) => {
   
   
-  const videoId = await params.videoId
+  const videoId =  (await params).videoId
 
 
   if (!videoId) {
@@ -24,6 +25,8 @@ const VideoIdPage = async ({
   }
 
   try {
+
+    
     // Fetch video details
     const videoDetails = await getVideoDetails(videoId);
     if (!videoDetails) {
@@ -48,40 +51,20 @@ const VideoIdPage = async ({
           <div className="col-span-3 md:col-span-2 h-full w-full order-last md:order-first ">
             <div className="w-full h-full p-5">
               <div className="w-full text-center text-3xl font-extrabold ">Transctiptions</div>
-              <div className="w-full grid grid-cols-3 border-white/50  bg-violet-500 rounded-md p-2 text-xl font-semibold">
-                <div className="col-span-1 text-center">
-                  Start
-                </div>
-                <div className="col-span-1 text-center">
-                  End
-                </div>
-                <div className="col-span-1 text-center">
-                  Content
-                </div>
-              </div>
-              <div className="w-full bg-blue-900 grid grid-cols-3">
-                {
-                  transcriptionResponse.length > 0 &&(
-                    transcriptionResponse.map((item: any, key:any) =>(
-                      <TranscriptionItem 
-                        key={key}
-                        item = {item}
-                      />
-                    ))
-                  )
-                }
-              </div>
+              <TranscriptionTable 
+                transcriptiondata = {transcriptionResponse}
+              />
             </div>
           </div>
           <div className="col-span-3 md:col-span-1 h-full w-full order-first md:order-none ">
             <div className="h-screen w-full flex justify-center items-center sticky top-6">
-              <video
+              {/* <video
                 src={videoUrl}
                 controls
                 style={{ width: "240px", height: "426px" }}
                 className="rounded-lg"
-              /> 
-              {/* <div className="h-[426px] w-[240px]">
+              />  */}
+              <div className="h-[426px] w-[240px]">
                 <div role="status" className="h-full w-full flex justify-center items-center bg-slate-300/20 rounded-lg">
                   <svg aria-hidden="true" className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
@@ -89,7 +72,7 @@ const VideoIdPage = async ({
                   </svg>
                   <span className="sr-only">Loading...</span>
                 </div>
-              </div> */}
+              </div>
             </div>      
           </div>
         </div>
