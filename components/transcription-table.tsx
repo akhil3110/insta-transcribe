@@ -19,7 +19,15 @@ const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
 
   useEffect(() => {
     setTranscription(transcriptiondata);
-  }, [transcriptiondata]); // Add dependency for proper updates
+  }, []);
+
+
+  const updateTranscription = (index: number, property: string, ev: any) =>{
+    const newTranscription = [...transcription]
+    //@ts-ignore
+    newTranscription[index][property] = ev.target.value
+    setTranscription(newTranscription)
+  }
 
   return (
     <>
@@ -31,7 +39,13 @@ const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
       <div className="w-full bg-blue-900 grid grid-cols-3">
         {transcription.length > 0 &&
           transcription.map((item, key) => (
-            <TranscriptionItem key={key} item={item} />
+            <TranscriptionItem 
+                key={key}
+                item={item} 
+                handleStartTimesChange={(ev:any) => updateTranscription(key,'start_time',ev)}
+                handleEndTimesChange={(ev:any) => updateTranscription(key,'end_time',ev)}
+                handleContentChange={(ev:any) => updateTranscription(key,'content',ev)}
+            />
           ))}
       </div>
     </>
