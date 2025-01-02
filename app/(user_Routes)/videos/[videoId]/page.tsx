@@ -1,6 +1,7 @@
 import { getTranscription } from "@/actions/getTranscritpion";
 import { getVideoDetails } from "@/actions/getVideoDetails";
 import { getVideoSignedUrl } from "@/actions/getVideoSignedUrl";
+import TranscriptionTable from "@/components/transcription-table";
 
 const VideoIdPage = async ({
   params,
@@ -10,7 +11,7 @@ const VideoIdPage = async ({
   };
 }) => {
   
-
+  
   if (!params?.videoId) {
     return <div>Error: Video ID is missing!</div>;
   }
@@ -36,6 +37,7 @@ const VideoIdPage = async ({
       <div className="h-full w-full overflow-y-scroll">
         <div className="grid grid-cols-3 w-full h-full">
           <div className="cols-span-3 md:col-span-2 order-last md:order-none">
+            <TranscriptionTable />
           </div>
           <div className="col-span-3 md:col-span-1 h-full w-full order-first md:order-none ">
             <div className="h-screen w-full flex justify-center items-center sticky top-6">

@@ -29,12 +29,26 @@ export const getTranscription =async(fileName: string, email: string) => {
 
         let transcriptionFileResponse = await s3.send(getObjectCommand)
 
-        if(transcriptionFileResponse){
-            return JSON.parse(
+
+        const transcription =  JSON.parse(
                 //@ts-ignore
                 await streamToString(transcriptionFileResponse.Body)
             )
-        }
+        
+        transcription.results.items.forEach((item: any,key: any) => {
+                if(!item.start_time){
+                    const prev = transcription.results.items[key-1]; 
+                    prev.alternatives[0].content +=   item.alternatives[0].content
+                    delete transcription.results.items[key]
+                }
+            })
+
+        return  transcription.results.items.map((item:any) =>{
+            const {start_time,end_time} = item;
+            const content = item.alternatives[0].content;
+            return {start_time,end_time,content}
+        })
+        
 
         return null
 
