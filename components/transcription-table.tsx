@@ -2,7 +2,7 @@
 const TranscriptionTable = () => {
     return ( 
         <div>
-            adadad
+            
         </div>
      );
 }
