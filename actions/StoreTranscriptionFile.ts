@@ -1,9 +1,4 @@
-import { auth } from "@/auth";
-import prisma from "@/lib/db";
-import {GetObjectCommand, S3Client} from "@aws-sdk/client-s3";
 import {GetTranscriptionJobCommand, ListTranscriptionJobsCommand, StartTranscriptionJobCommand, TranscribeClient} from "@aws-sdk/client-transcribe";
-import { getVideoSignedUrl } from "./getVideoSignedUrl";
-import s3 from "@/lib/awsS3Client";
 import toast from "react-hot-toast";
 
 if (!process.env.NEXT_PUBLIC_AWS_PUBLIC_ACCESS_KEY || !process.env.NEXT_PUBLIC_AWS_SECERET_ACCESS_KEY) {
@@ -19,41 +14,42 @@ const awsTrancribeClient = new TranscribeClient({
 })
 
 
-//@ts-ignore
-async function streamToString(stream) {
-    //@ts-ignore
-    const chunks = [];
-    return new Promise((resolve, reject) => {
-       //@ts-ignore
-      stream.on('data', chunk => chunks.push(Buffer.from(chunk)));
-      //@ts-ignore
-      stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-      stream.on('error', reject);
-    });
-}
+// //@ts-ignore 
+
+// async function streamToString(stream) {
+//     //@ts-ignore
+//     const chunks = [];
+//     return new Promise((resolve, reject) => {
+//        //@ts-ignore
+//       stream.on('data', chunk => chunks.push(Buffer.from(chunk)));
+//       //@ts-ignore
+//       stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+//       stream.on('error', reject);
+//     });
+// }
 
    
-async function getTranscriptionFile(folderName:string,fileName: string) {
-    const transcriptioFileDestination = `${folderName}/${fileName}.transcription`
+// async function getTranscriptionFile(folderName:string,fileName: string) {
+//     const transcriptioFileDestination = `${folderName}/${fileName}.transcription`
 
-    const getObjectCommand = new GetObjectCommand({
-        Bucket: 'bucket.akhilparmar.dev',
-        Key: transcriptioFileDestination
-    }) 
-    let transcriptionFileResponse = null;
-    try {
-      transcriptionFileResponse = await s3.send(getObjectCommand);
-    } catch (e) {
-        console.log(e)
-    }
-    if (transcriptionFileResponse) {
-      return JSON.parse(
-        //@ts-ignore
-        await streamToString(transcriptionFileResponse.Body)
-      );
-    }
-    return null;
-  }
+//     const getObjectCommand = new GetObjectCommand({
+//         Bucket: 'bucket.akhilparmar.dev',
+//         Key: transcriptioFileDestination
+//     }) 
+//     let transcriptionFileResponse = null;
+//     try {
+//       transcriptionFileResponse = await s3.send(getObjectCommand);
+//     } catch (e) {
+//         console.log(e)
+//     }
+//     if (transcriptionFileResponse) {
+//       return JSON.parse(
+//         //@ts-ignore
+//         await streamToString(transcriptionFileResponse.Body)
+//       );
+//     }
+//     return null;
+//   }
 
   export const StoreTranscription = async (fileName: string, email: string) => {
     try {
