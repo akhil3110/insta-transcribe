@@ -4,27 +4,23 @@ interface TranscriptionItemProps {
         end_time: string,
         content: string
     },
-    handleStartTimesChange: (ev: any) => void;
-    handleEndTimesChange: (ev: any) => void;
     handleContentChange: (ev: any) => void;
 }
 
 const TranscriptionItem = ({
     item,
-    handleStartTimesChange,
-    handleEndTimesChange,
     handleContentChange
 }: TranscriptionItemProps) => {
 
     if(!item){
         return '';
     }
-    
+
     return ( 
         <>
-           <input className="col-span-1" defaultValue={item.start_time} onChange={handleStartTimesChange} />
-           <input className="col-span-1" defaultValue={item.end_time} onChange={handleEndTimesChange} />
-           <input className="col-span-1" defaultValue={item.content} onChange={handleContentChange} />
+           <div className="col-span-1 text-center w-full"> {item.start_time} </div>
+           <div className="col-span-1 text-center w-full    "> {item.end_time} </div>
+           <input className="col-span-1 text-center bg-blue-900" defaultValue={item.content} onChange={handleContentChange} />
         </>
      );
 }

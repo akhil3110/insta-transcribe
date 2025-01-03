@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from "react";
 import TranscriptionItem from "./transcription-item";
+import useTranscriptionStore from "@/store/transcription-store";
+
+
 
 interface TranscriptionTableProps {
   transcriptiondata: {
@@ -13,20 +16,20 @@ interface TranscriptionTableProps {
 
 const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
   // Explicitly define the type of the state
-  const [transcription, setTranscription] = useState<
-    { start_time: string; end_time: string; content: string }[]
-  >([]);
+  // const [transcription, setTranscription] = useState<{ start_time: string; end_time: string; content: string }[]>([]);
+  
+  const { transcriptions, setTranscriptions } = useTranscriptionStore();
 
   useEffect(() => {
-    setTranscription(transcriptiondata);
+    setTranscriptions(transcriptiondata);
   }, []);
 
 
   const updateTranscription = (index: number, property: string, ev: any) =>{
-    const newTranscription = [...transcription]
+    const newTranscription = [...transcriptions]
     //@ts-ignore
     newTranscription[index][property] = ev.target.value
-    setTranscription(newTranscription)
+    setTranscriptions(newTranscription)
   }
 
   return (
@@ -37,13 +40,11 @@ const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
         <div className="col-span-1 text-center">Content</div>
       </div>
       <div className="w-full bg-blue-900 grid grid-cols-3">
-        {transcription.length > 0 &&
-          transcription.map((item, key) => (
+        {transcriptions.length > 0 &&
+          transcriptions.map((item, key) => (
             <TranscriptionItem 
                 key={key}
                 item={item} 
-                handleStartTimesChange={(ev:any) => updateTranscription(key,'start_time',ev)}
-                handleEndTimesChange={(ev:any) => updateTranscription(key,'end_time',ev)}
                 handleContentChange={(ev:any) => updateTranscription(key,'content',ev)}
             />
           ))}
