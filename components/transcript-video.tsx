@@ -1,3 +1,9 @@
+"use client"
+import { Rocket } from "lucide-react";
+import { Button } from "./ui/button";
+import { useEffect, useState } from "react";
+import useTranscriptionStore from "@/store/transcription-store";
+
 interface TranscriptVideoProps{
     videoUrl: string
 }
@@ -5,14 +11,56 @@ interface TranscriptVideoProps{
 const TranscriptVideo = ({
     videoUrl
 }: TranscriptVideoProps) => {
+
+    const { transcriptions, setTranscriptions } = useTranscriptionStore();
+
+    useEffect(() =>{
+        console.log(transcriptions)
+    },[])
+
+    const [primaryColor,setPrimaryColor] = useState('#FFFFFF')
+    const [outlineColor,setOutlineColor] = useState('#000000')
+
     return ( 
         <div className="h-screen w-full flex justify-center items-center sticky top-6">
-              <video
-                src={videoUrl}
-                controls
-                style={{ width: "240px", height: "426px" }}
-                className="rounded-lg"
-              /> 
+            <div className="flex flex-col gap-y-4">
+            <div>
+                <div className="flex justify-around">
+                    <div className="font-bold">
+                        Primary color:
+                    </div>
+                    <div>
+                        <input type="color"
+                            value={primaryColor}
+                            onChange={ev => setPrimaryColor(ev.target.value)}
+                            className=" bg-transparent"
+                        />
+                    </div>
+                </div>
+                <div className="flex justify-around">
+                    <div className="font-bold">
+                        Outline color:
+                    </div>
+                    <div>
+                        <input type="color"
+                            value={outlineColor}
+                            onChange={ev => setOutlineColor(ev.target.value)}
+                            className=" bg-transparent"
+                        />
+                    </div>
+                </div>
+            </div>
+                <video
+                    src={videoUrl}
+                    controls
+                    style={{ width: "240px", height: "426px" }}
+                    className="rounded-lg"
+                /> 
+                <Button className="font-bold text-lg" variant={'destructive'}>
+                    <Rocket />
+                    Apply Captions
+                </Button>
+            </div>
               {/* <div className="h-[426px] w-[240px]">
                 <div role="status" className="h-full w-full flex justify-center items-center bg-slate-300/20 rounded-lg">
                   <svg aria-hidden="true" className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
