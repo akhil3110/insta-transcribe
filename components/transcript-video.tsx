@@ -1,25 +1,99 @@
+//@ts-nocheck
+
 "use client"
 import { Rocket } from "lucide-react";
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import useTranscriptionStore from "@/store/transcription-store";
+import { FFmpeg } from '@ffmpeg/ffmpeg';
+import { fetchFile,toBlobURL } from '@ffmpeg/util';
+
+//@ts-ignore
+import roboto from "@/_fonts/Roboto-Regular.ttf"
+//@ts-ignore
+import robotoBold from "@/_fonts/Roboto-Bold.ttf"
+import { useRouter } from "next/navigation";
+import { ToSrt } from "@/lib/toSrt";
+import toast from "react-hot-toast";
 
 interface TranscriptVideoProps{
     videoUrl: string
+    fileName: string
 }
 
 const TranscriptVideo = ({
-    videoUrl
+    videoUrl,
+    fileName
 }: TranscriptVideoProps) => {
 
     const { transcriptions, setTranscriptions } = useTranscriptionStore();
 
-    useEffect(() =>{
-        console.log(transcriptions)
-    },[])
-
     const [primaryColor,setPrimaryColor] = useState('#FFFFFF')
     const [outlineColor,setOutlineColor] = useState('#000000')
+    const [loaded, setLoaded] = useState(false);
+    const [transcribing,setTranscribing] = useState(false)
+    
+    const videoRef = useRef<any>(null)
+    const ffmpegRef = useRef(new FFmpeg());
+
+    const router = useRouter()
+
+    useEffect(() =>{
+        videoRef.current.src = videoUrl;
+        load()
+    },[])
+    
+    function toFFmpegColor(rgb: string) {
+        const bgr = rgb.slice(5,7) + rgb.slice(3,5) + rgb.slice(1,3);
+        return '&H' + bgr + '&';
+    }
+
+    const load = async () => {
+        const ffmpeg = ffmpegRef.current;
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd'
+        await ffmpeg.load({
+          coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+          wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+        });
+        await ffmpeg.writeFile('/tmp/roboto.ttf', await fetchFile(roboto));
+        await ffmpeg.writeFile('/tmp/roboto-bold.ttf', await fetchFile(robotoBold));
+        setLoaded(true);
+    }
+
+    const transcode = async () => {
+        toast.success("adad")
+        router.refresh();
+        const ffmpeg = ffmpegRef.current;
+        const srt = ToSrt(transcriptions);
+        await ffmpeg.writeFile(fileName, await fetchFile(videoUrl));
+        await ffmpeg.writeFile('subs.srt', srt);
+        videoRef.current.src = videoUrl;
+        await new Promise((resolve, reject) => {
+          videoRef.current.onloadedmetadata = resolve;
+        });
+        const duration = videoRef.current.duration;
+        // ffmpeg.on('log', ({ message }) => {
+        //   const regexResult = /time=([0-9:.]+)/.exec(message);
+        //   if (regexResult && regexResult?.[1]) {
+        //     const howMuchIsDone = regexResult?.[1];
+        //     const [hours,minutes,seconds] = howMuchIsDone.split(':');
+        //     const doneTotalSeconds = hours * 3600 + minutes * 60 + seconds;
+        //     const videoProgress = doneTotalSeconds / duration;
+        //     setProgress(videoProgress);
+        //   }
+        // });
+        await ffmpeg.exec([
+          '-i', fileName,
+          '-preset', 'ultrafast',
+          '-vf', `subtitles=subs.srt:fontsdir=/tmp:force_style='Fontname=Roboto Bold,FontSize=30,MarginV=50,PrimaryColour=${toFFmpegColor(primaryColor)},OutlineColour=${toFFmpegColor(outlineColor)}'`,
+          'output.mp4'
+        ]);
+        const data = await ffmpeg.readFile('output.mp4');
+        videoRef.current.src = URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
+        toast.error("adad")
+      }
+
+    
 
     return ( 
         <div className="h-screen w-full flex justify-center items-center sticky top-6">
@@ -27,7 +101,7 @@ const TranscriptVideo = ({
             <div>
                 <div className="flex justify-around">
                     <div className="font-bold">
-                        Primary color:
+                        Text Primary color:
                     </div>
                     <div>
                         <input type="color"
@@ -39,7 +113,7 @@ const TranscriptVideo = ({
                 </div>
                 <div className="flex justify-around">
                     <div className="font-bold">
-                        Outline color:
+                        Text Outline color:
                     </div>
                     <div>
                         <input type="color"
@@ -50,13 +124,24 @@ const TranscriptVideo = ({
                     </div>
                 </div>
             </div>
+                {
+                    transcribing ? (
+                        <div>
+
+                        </div>
+                    ) : (
+                        <div>
+                            
+                        </div>
+                    )
+                }
                 <video
-                    src={videoUrl}
+                    ref={videoRef}
                     controls
                     style={{ width: "240px", height: "426px" }}
                     className="rounded-lg"
                 /> 
-                <Button className="font-bold text-lg" variant={'destructive'}>
+                <Button onClick={transcode} className="font-bold text-lg" variant={'destructive'}>
                     <Rocket />
                     Apply Captions
                 </Button>
