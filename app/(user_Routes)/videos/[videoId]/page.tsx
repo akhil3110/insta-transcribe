@@ -42,17 +42,17 @@ const VideoIdPage = async ({
       <div className="h-full w-full overflow-y-scroll">
         <div className="grid grid-cols-3 w-full h-full">
           <div className="col-span-3 md:col-span-2 h-full w-full order-last md:order-first ">
+            <TranscriptVideo
+              videoUrl={videoUrl}
+            />
+          </div>
+          <div className="col-span-3 md:col-span-1 h-full w-full order-first md:order-none ">
             <div className="w-full h-full p-5">
               <div className="w-full text-center text-3xl font-extrabold ">Transctiptions</div>
               <TranscriptionTable 
                 transcriptiondata = {transcriptionResponse}
               />
-            </div>
-          </div>
-          <div className="col-span-3 md:col-span-1 h-full w-full order-first md:order-none ">
-            <TranscriptVideo
-              videoUrl={videoUrl}
-            />     
+            </div>     
           </div>
         </div>
       </div>
