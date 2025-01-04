@@ -1,7 +1,7 @@
 //@ts-nocheck
 
 "use client"
-import { Rocket } from "lucide-react";
+import { Download, Rocket } from "lucide-react";
 import { Button } from "./ui/button";
 import { use, useEffect, useRef, useState } from "react";
 import useTranscriptionStore from "@/store/transcription-store";
@@ -33,6 +33,7 @@ const TranscriptVideo = ({
     const [loaded, setLoaded] = useState(false);
     const [transcribing,setTranscribing] = useState(false)
     const [progress, setProgress] = useState(1);
+    const [isTranscribed,setIsTranscribed] = useState(false)
     
     const videoRef = useRef<any>(null)
     const ffmpegRef = useRef(new FFmpeg());
@@ -62,8 +63,8 @@ const TranscriptVideo = ({
     }
 
     const transcode = async () => {
-        toast.success("adad")
         router.refresh();
+        setIsTranscribed(false)
         const ffmpeg = ffmpegRef.current;
         const srt = ToSrt(transcriptions);
         await ffmpeg.writeFile(fileName, await fetchFile(videoUrl));
@@ -91,14 +92,15 @@ const TranscriptVideo = ({
         ]);
         const data = await ffmpeg.readFile('output.mp4');
         videoRef.current.src = URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
-        toast.error("adad")
+        toast.success("Adding Caption to Video is succesfull")
         setProgress(1)
+        setIsTranscribed(true)
       }
 
     
 
     return ( 
-        <div className="h-screen w-full flex justify-center items-center sticky top-6">
+        <div className="h-[60%] mt-44 md:mt-0 md:h-screen w-full flex justify-center items-center sticky md:top-6">
             <div className="flex flex-col gap-y-4">
             <div>
                 <div className="flex justify-around">
@@ -154,11 +156,31 @@ const TranscriptVideo = ({
                     </div>
                 )}
             </div>
-
             <Button onClick={transcode} className="font-bold text-lg" variant={'destructive'}>
                 <Rocket />
                 Apply Captions
             </Button>
+            {isTranscribed && (
+                <Button
+                onClick={() => {
+                    const videoElement = videoRef.current;
+                    if (videoElement && videoElement.src) {
+                        const anchor = document.createElement('a');
+                        anchor.href = videoElement.src;
+                        anchor.download = 'video.mp4'; // Set the desired file name for download
+                        document.body.appendChild(anchor);
+                        anchor.click();
+                        document.body.removeChild(anchor);
+                    } else {
+                        toast.error("No video available to download");
+                    }
+                }}
+                className="font-bold text-lg"
+            >
+                <Download/>
+                Download Video
+            </Button>        
+            )}
         </div>     
     </div> 
     );
