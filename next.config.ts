@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
-    domains: ['assets.aceternity.com','https://s3.ap-south-1.amazonaws.com/*']
+    domains: ['assets.aceternity.com','s3.ap-south-1.amazonaws','lh3.googleusercontent.com']
   }
 };
 

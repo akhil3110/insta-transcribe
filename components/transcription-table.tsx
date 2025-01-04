@@ -34,7 +34,7 @@ const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
 
   return (
     <>
-      <div className="w-full grid grid-cols-3 border-white/50 bg-violet-500 rounded-md p-2 text-xl font-semibold">
+      <div className="w-full sticky top-0 grid grid-cols-3 border-white/50 bg-violet-500 rounded-md p-2 text-xl font-semibold">
         <div className="col-span-1 text-center">Start</div>
         <div className="col-span-1 text-center">End</div>
         <div className="col-span-1 text-center">Content</div>

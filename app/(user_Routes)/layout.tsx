@@ -98,8 +98,8 @@ const UserRoutesLayout = ({
                                 label: `${session?.user?.name}`,
                                 href: "#",
                                 icon: (
-                                    <Image
-                                        src="https://assets.aceternity.com/manu.png"
+                                    <img
+                                        src={session?.user?.image || undefined}
                                         className="h-7 w-7 flex-shrink-0 rounded-full"
                                         width={50}
                                         height={50}
