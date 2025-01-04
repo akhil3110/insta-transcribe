@@ -3,12 +3,18 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { SessionProvider } from "next-auth/react"
 import { Toaster } from "react-hot-toast";
 import {RecoilRoot} from "recoil"
+import useLoadingStore from "./store/loading-store";
+import Loading from "./components/loading";
+
 
 export default function Providers({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const {loading} = useLoadingStore()
+
   return (
     <SessionProvider>
     <ThemeProvider
@@ -19,6 +25,7 @@ export default function Providers({
     >
     <Toaster />
         <RecoilRoot>
+        {loading.isLoading && <Loading />}
           {children}
         </RecoilRoot>
     </ThemeProvider>

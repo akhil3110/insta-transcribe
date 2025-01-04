@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { StoreTranscription } from "@/actions/StoreTranscriptionFile";
+import useLoadingStore from "@/store/loading-store";
 
 
 export interface UploadFormData {
@@ -15,8 +16,10 @@ export interface UploadFormData {
 
 const UploadSection = () => {
   const [isUploading, setIsUploading] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [url, setUrl] = useState("");
+  const {loading,setLoading} = useLoadingStore()
+  
+
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -49,9 +52,10 @@ const UploadSection = () => {
 
       const transcription = await StoreTranscription(presignedUrl.data.fileName, session.user?.email!)
 
-      setLoading(false);
+      
       if (res.ok) {
         toast.success("File uploaded successfully!");
+        setLoading(false);
         router.push(`/videos/${presignedUrl.data.videoId}`);
       } else {
         toast.error("Failed to upload the video.");
