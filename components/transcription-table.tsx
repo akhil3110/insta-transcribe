@@ -21,7 +21,7 @@ const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
 
   const updateTranscription = (index: number, property: string, ev: any) => {
     const newTranscription = [...transcriptions];
-    //@ts-ignore
+    //@ts-expect-error
     newTranscription[index][property] = ev.target.value;
     setTranscriptions(newTranscription);
   };

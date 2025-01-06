@@ -4,7 +4,7 @@ interface TranscriptionItemProps {
       end_time: string;
       content: string;
     };
-    //@ts-ignore
+    //@ts-expect-error
     handleContentChange: (ev) => void;
   }
   

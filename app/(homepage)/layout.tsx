@@ -1,5 +1,4 @@
 import Header from "@/components/header";
-import Providers from "@/providers";
 
 const HomePageLayout = ({
     children

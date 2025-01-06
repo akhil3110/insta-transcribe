@@ -1,19 +1,18 @@
 "use client"
 import { Download, Rocket } from "lucide-react";
 import { Button } from "./ui/button";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useTranscriptionStore from "@/store/transcription-store";
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile,toBlobURL } from '@ffmpeg/util';
 
-//@ts-ignore
+//@ts-expect-error
 import roboto from "@/_fonts/Roboto-Regular.ttf"
-//@ts-ignore
+//@ts-expect-error
 import robotoBold from "@/_fonts/Roboto-Bold.ttf"
 import { useRouter } from "next/navigation";
 import { ToSrt } from "@/lib/toSrt";
 import toast from "react-hot-toast";
-import { useSession } from "next-auth/react";
 
 
 interface TranscriptVideoProps{
@@ -27,7 +26,6 @@ const TranscriptVideo = ({
 }: TranscriptVideoProps) => {
 
     const { transcriptions } = useTranscriptionStore();
-    const {data: session} = useSession()
 
     const [primaryColor,setPrimaryColor] = useState('#FFFFFF')
     const [outlineColor,setOutlineColor] = useState('#000000')
@@ -70,7 +68,7 @@ const TranscriptVideo = ({
         await ffmpeg.writeFile(fileName, await fetchFile(videoUrl));
         await ffmpeg.writeFile('subs.srt', srt);
         videoRef.current.src = videoUrl;
-        await new Promise((resolve, reject) => {
+        await new Promise((resolve) => {
           videoRef.current.onloadedmetadata = resolve;
         });
         const duration = videoRef.current.duration;
@@ -79,9 +77,9 @@ const TranscriptVideo = ({
           if (regexResult && regexResult?.[1]) {
             const howMuchIsDone = regexResult?.[1];
             const [hours,minutes,seconds] = howMuchIsDone.split(':');
-            //@ts-ignore
+            //@ts-expect-error
             const doneTotalSeconds = hours * 3600 + minutes * 60 + seconds;
-            //@ts-ignore
+            //@ts-expect-error
             const videoProgress = doneTotalSeconds / duration;
             setProgress(videoProgress);
           }
@@ -93,7 +91,7 @@ const TranscriptVideo = ({
           'output.mp4'
         ]);
         const data = await ffmpeg.readFile('output.mp4');
-        //@ts-ignore
+        //@ts-expect-error
         videoRef.current.src = URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
         toast.success("Adding Caption to Video is succesfull")
         setProgress(1)

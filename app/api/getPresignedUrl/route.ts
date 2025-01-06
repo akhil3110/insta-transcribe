@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import s3 from "@/lib/awsS3Client";
 import { NextResponse } from "next/server";
-import  {S3Client, GetObjectCommand, PutObjectCommand, ListObjectsV2Command, DeleteObjectCommand} from '@aws-sdk/client-s3'
+import  { PutObjectCommand} from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import prisma from "@/lib/db";
 
@@ -45,7 +45,6 @@ export async function POST(req: Request) {
             ContentType: fileType
         })
         
-        //@ts-ignore
         const URL = await getSignedUrl(s3, command)
 
 
@@ -64,7 +63,7 @@ export async function POST(req: Request) {
         })
        
     } catch (error) {
-        //@ts-ignore
+        //@ts-expect-error
         console.error("Error:", error.message, error.stack);
         return new NextResponse("Internal Server Error", { status: 500 });
     }
