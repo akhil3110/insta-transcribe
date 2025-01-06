@@ -29,7 +29,6 @@ const TranscriptVideo = ({
 
     const [primaryColor,setPrimaryColor] = useState('#FFFFFF')
     const [outlineColor,setOutlineColor] = useState('#000000')
-    const [loaded, setLoaded] = useState(false);
     const [progress, setProgress] = useState(1);
     const [isTranscribed,setIsTranscribed] = useState(false)
     
@@ -57,7 +56,7 @@ const TranscriptVideo = ({
         });
         await ffmpeg.writeFile('/tmp/roboto.ttf', await fetchFile(roboto));
         await ffmpeg.writeFile('/tmp/roboto-bold.ttf', await fetchFile(robotoBold));
-        setLoaded(true);
+        
     }
 
     const transcode = async () => {
@@ -77,9 +76,9 @@ const TranscriptVideo = ({
           if (regexResult && regexResult?.[1]) {
             const howMuchIsDone = regexResult?.[1];
             const [hours,minutes,seconds] = howMuchIsDone.split(':');
-            //@ts-expect-error
+            //@ts-expect-error: hours and time type
             const doneTotalSeconds = hours * 3600 + minutes * 60 + seconds;
-            //@ts-expect-error
+            //@ts-expect-error: progress type
             const videoProgress = doneTotalSeconds / duration;
             setProgress(videoProgress);
           }
@@ -91,7 +90,7 @@ const TranscriptVideo = ({
           'output.mp4'
         ]);
         const data = await ffmpeg.readFile('output.mp4');
-        //@ts-expect-error
+        //@ts-expect-error: file buffer type
         videoRef.current.src = URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
         toast.success("Adding Caption to Video is succesfull")
         setProgress(1)
