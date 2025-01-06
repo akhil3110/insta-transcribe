@@ -1,25 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { Upload } from "lucide-react";
+import { UploadCloud } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
-import { StoreTranscription } from "@/actions/StoreTranscriptionFile";
 import useLoadingStore from "@/store/loading-store";
-
-
-export interface UploadFormData {
-  video: FileList;
-}
 
 const UploadSection = () => {
   const [isUploading, setIsUploading] = useState(false);
-  const [url, setUrl] = useState("");
-  const {loading,setLoading} = useLoadingStore()
-  
-
+  const { loading, setLoading } = useLoadingStore();
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -30,8 +21,6 @@ const UploadSection = () => {
         return;
       }
 
-      setLoading(true);
-      e.preventDefault();
       const file = e.target?.files?.[0];
       if (!file) {
         toast.error("No file selected.");
@@ -39,10 +28,10 @@ const UploadSection = () => {
         return;
       }
 
+      setLoading(true);
       const presignedUrl = await axios.post("/api/getPresignedUrl", {
         fileType: file.type,
       });
-      setUrl(presignedUrl.data.url);
 
       const res = await fetch(presignedUrl.data.url, {
         method: "PUT",
@@ -50,9 +39,6 @@ const UploadSection = () => {
         headers: { "Content-Type": file.type },
       });
 
-      const transcription = await StoreTranscription(presignedUrl.data.fileName, session.user?.email!)
-
-      
       if (res.ok) {
         toast.success("File uploaded successfully!");
         setLoading(false);
@@ -68,23 +54,35 @@ const UploadSection = () => {
   };
 
   return (
-    <div className="relative max-w-md mx-auto">
-      <label className="flex flex-col items-center justify-center md:mt-5 w-[300px] md:w-[500px] h-64 border-2 border-dashed border-gray-300 dark:border-[#1E293B] rounded-lg cursor-pointer bg-white dark:bg-[#1E293B] hover:bg-gray-50 dark:hover:bg-[#686b74] transition-colors">
-        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-          <Upload className="w-12 h-12 text-[#6366F1] mb-4" />
-          <p className="mb-2 text-sm text-gray-500 dark:text-[#E5E7EB]">
-            <span className="font-semibold">Click to upload</span> or drag and drop
+    <div className="relative max-w-3xl mx-auto mt-8">
+      <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-yellow-600 rounded-lg cursor-pointer bg-gradient-to-br from-sand-500 via-orange-300 to-yellow-400 hover:scale-105 hover:bg-opacity-90 shadow-xl transition-all duration-300 transform hover:rotate-2">
+        <div className="flex flex-col items-center justify-center pt-6 pb-8 space-y-3">
+          <UploadCloud className="w-16 h-16 text-white mb-4 animate-pulse" />
+          <p className="text-lg font-semibold text-white drop-shadow-md">
+            <span className="underline">Click to upload</span> or drag and drop
           </p>
-          <p className="text-xs text-gray-500 dark:text-[#E5E7EB]">MP4, MOV up to 500MB</p>
+          <p className="text-xs text-white opacity-90">
+            MP4 up to 500MB
+          </p>
         </div>
         <input
-          disabled={!!loading}
           type="file"
           className="hidden"
           accept="video/*"
           onChange={upload}
         />
       </label>
+      <div className="mt-4 text-center text-sm text-gray-400">
+        By uploading, you agree to our{" "}
+        <a href="/terms" className="text-indigo-300 underline">
+          Terms
+        </a>{" "}
+        and{" "}
+        <a href="/privacy" className="text-indigo-300 underline">
+          Privacy Policy
+        </a>
+        .
+      </div>
     </div>
   );
 };

@@ -15,6 +15,8 @@ import robotoBold from "@/_fonts/Roboto-Bold.ttf"
 import { useRouter } from "next/navigation";
 import { ToSrt } from "@/lib/toSrt";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
+import { Plan } from "@prisma/client";
 
 interface TranscriptVideoProps{
     videoUrl: string
@@ -27,6 +29,7 @@ const TranscriptVideo = ({
 }: TranscriptVideoProps) => {
 
     const { transcriptions, setTranscriptions } = useTranscriptionStore();
+    const {data: session} = useSession()
 
     const [primaryColor,setPrimaryColor] = useState('#FFFFFF')
     const [outlineColor,setOutlineColor] = useState('#000000')
@@ -110,7 +113,13 @@ const TranscriptVideo = ({
                     <div>
                         <input type="color"
                             value={primaryColor}
-                            onChange={ev => setPrimaryColor(ev.target.value)}
+                            onChange={(ev) => {
+                                // if(session?.user.plan === Plan.Free){
+                                //     toast.error("Upgrade your plan to change color")
+                                //     return
+                                // }
+                                setPrimaryColor(ev.target.value)
+                            }}
                             className=" bg-transparent"
                         />
                     </div>
@@ -122,7 +131,13 @@ const TranscriptVideo = ({
                     <div>
                         <input type="color"
                             value={outlineColor}
-                            onChange={ev => setOutlineColor(ev.target.value)}
+                            onChange={(ev) => {
+                                // if(session?.user.plan === Plan.Free){
+                                //     toast.error("Upgrade your plan to change color")
+                                //     return
+                                // }
+                                setOutlineColor(ev.target.value)
+                            }}
                             className=" bg-transparent"
                         />
                     </div>

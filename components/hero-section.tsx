@@ -1,24 +1,18 @@
-import { BackgroundBeams } from "./ui/background-beams";
-
-const badges = [
-    '10M+ Creator Videos',
-    'TikTok Verified',
-    'Instagram Ready'
-  ];
-
 const HeroSection = () => {
-    return ( 
-        <div className="text-center h-[300px] sm:h-[200px]">
-            <h1 className="text-4xl sm:text-5xl text-gray-900 dark:text-white mb-6 font-extrabold">
-                Transform Your Videos with
-                <span className="text-indigo-600"> Transcription</span>
-            </h1>
-            <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto text-center font-semibold leading-8">
-                Upload your short-form videos and get accurate transcriptions in minutes. Perfect for content creators, social media managers, and video editors.
-            </p>
-            <BackgroundBeams className="" />
-        </div>
+    return (
+      <div className="relative text-center h-[300px] sm:h-[200px] flex flex-col justify-center items-center">
+        <h1 className="text-3xl sm:text-5xl text-white mb-4 sm:mb-6 font-extrabold tracking-tight leading-tight">
+          Transform Your Videos with{" "}
+          <span className="text-yellow-400">AI-Powered Transcriptions</span>
+        </h1>
+        <p className="text-base sm:text-lg text-gray-100 max-w-2xl mx-auto font-medium leading-relaxed">
+          Upload your short-form videos and receive precise transcriptions in
+          minutes. Built for content creators, editors, and social media
+          managers.
+        </p>
+      </div>
     );
-}
- 
-export default HeroSection;
+  };
+  
+  export default HeroSection;
+  

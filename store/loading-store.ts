@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 interface LoadingStateType {
     isLoading: boolean,
-    loadingType?: string
+    loadingType?: string | null
 }
 
 interface LoadingStore {
@@ -13,8 +13,9 @@ interface LoadingStore {
 
 const useLoadingStore = create<LoadingStore>((set) => ({
     loading: {
-        isLoading: false
-    } ,
+        isLoading: false,
+        loadingType: null
+    } , 
     setLoading: (value) => set( (state) => ({ loading: {...state.loading, isLoading: value}})),
     setLoadingType: (value) => set( (state) => ({ loading: {...state.loading, loadingType: value}}))
 }));
