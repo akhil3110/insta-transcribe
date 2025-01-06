@@ -63,8 +63,7 @@ export async function POST(req: Request) {
         })
        
     } catch (error) {
-        //@ts-expect-error
-        console.error("Error:", error.message, error.stack);
+        console.error("Error:", error);
         return new NextResponse("Internal Server Error", { status: 500 });
     }
 }

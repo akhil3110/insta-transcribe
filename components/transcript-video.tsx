@@ -32,12 +32,13 @@ const TranscriptVideo = ({
     const [progress, setProgress] = useState(1);
     const [isTranscribed,setIsTranscribed] = useState(false)
     
-    const videoRef = useRef<any>(null)
+    const videoRef = useRef(null)
     const ffmpegRef = useRef(new FFmpeg());
 
     const router = useRouter()
 
     useEffect(() =>{
+        //@ts-expect-error: video ref type
         videoRef.current.src = videoUrl;
         load()
     },[])
@@ -66,10 +67,13 @@ const TranscriptVideo = ({
         const srt = ToSrt(transcriptions);
         await ffmpeg.writeFile(fileName, await fetchFile(videoUrl));
         await ffmpeg.writeFile('subs.srt', srt);
+        //@ts-expect-error: video ref type
         videoRef.current.src = videoUrl;
         await new Promise((resolve) => {
+            //@ts-expect-error: video ref type
           videoRef.current.onloadedmetadata = resolve;
         });
+        //@ts-expect-error: video ref type
         const duration = videoRef.current.duration;
         ffmpeg.on('log', ({ message }) => {
           const regexResult = /time=([0-9:.]+)/.exec(message);
@@ -176,8 +180,10 @@ const TranscriptVideo = ({
                 <Button
                 onClick={() => {
                     const videoElement = videoRef.current;
+                    //@ts-expect-error: video ref type
                     if (videoElement && videoElement.src) {
                         const anchor = document.createElement('a');
+                        //@ts-expect-error: video ref type
                         anchor.href = videoElement.src;
                         anchor.download = 'video.mp4'; // Set the desired file name for download
                         document.body.appendChild(anchor);
