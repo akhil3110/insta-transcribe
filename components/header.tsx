@@ -1,7 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation";
 import { Logo } from "./logo";
-import { ModeToggle } from "./mode-toggle";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react"
 import { Button } from "./ui/button";

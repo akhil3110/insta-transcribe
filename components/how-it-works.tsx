@@ -1,8 +1,6 @@
 "use clent"
-import Image from "next/image";
 import React from "react";
 import { Timeline } from "@/components/ui/timeline";
-import { title } from "process";
 import { Rocket } from "lucide-react";
 
 const  TimelineDemo = () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { UploadCloud } from "lucide-react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -9,8 +9,7 @@ import { toast } from "react-hot-toast";
 import useLoadingStore from "@/store/loading-store";
 
 const UploadSection = () => {
-  const [isUploading, setIsUploading] = useState(false);
-  const { loading, setLoading } = useLoadingStore();
+  const { setLoading } = useLoadingStore();
   const router = useRouter();
   const { data: session } = useSession();
 

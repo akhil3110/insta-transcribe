@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 "use client"
 import { Download, Rocket } from "lucide-react";
 import { Button } from "./ui/button";
@@ -16,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { ToSrt } from "@/lib/toSrt";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import { Plan } from "@prisma/client";
+
 
 interface TranscriptVideoProps{
     videoUrl: string
@@ -28,13 +26,12 @@ const TranscriptVideo = ({
     fileName
 }: TranscriptVideoProps) => {
 
-    const { transcriptions, setTranscriptions } = useTranscriptionStore();
+    const { transcriptions } = useTranscriptionStore();
     const {data: session} = useSession()
 
     const [primaryColor,setPrimaryColor] = useState('#FFFFFF')
     const [outlineColor,setOutlineColor] = useState('#000000')
     const [loaded, setLoaded] = useState(false);
-    const [transcribing,setTranscribing] = useState(false)
     const [progress, setProgress] = useState(1);
     const [isTranscribed,setIsTranscribed] = useState(false)
     
@@ -82,7 +79,9 @@ const TranscriptVideo = ({
           if (regexResult && regexResult?.[1]) {
             const howMuchIsDone = regexResult?.[1];
             const [hours,minutes,seconds] = howMuchIsDone.split(':');
+            //@ts-ignore
             const doneTotalSeconds = hours * 3600 + minutes * 60 + seconds;
+            //@ts-ignore
             const videoProgress = doneTotalSeconds / duration;
             setProgress(videoProgress);
           }
@@ -94,6 +93,7 @@ const TranscriptVideo = ({
           'output.mp4'
         ]);
         const data = await ffmpeg.readFile('output.mp4');
+        //@ts-ignore
         videoRef.current.src = URL.createObjectURL(new Blob([data.buffer], {type: 'video/mp4'}));
         toast.success("Adding Caption to Video is succesfull")
         setProgress(1)

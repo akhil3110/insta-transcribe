@@ -1,5 +1,6 @@
 
-const secondsToFormatedTime = (time: any) => {
+//@ts-ignore
+const secondsToFormatedTime = (time) => {
     const d = new Date(parseFloat(time) * 1000);
   return d.toISOString().slice(11,23).replace('.', ',');
 }   

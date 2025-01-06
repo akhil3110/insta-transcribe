@@ -6,11 +6,9 @@ import {
   IconBrandTabler,
   IconHome,
   IconSettings,
-  IconUserBolt,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Smartphone } from "lucide-react";
 import { signOut, useSession } from "next-auth/react"

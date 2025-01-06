@@ -5,8 +5,7 @@ import {
   IconArrowLeft,
   IconBrandTabler,
   IconHome,
-  IconSettings,
-  IconUserBolt,
+  IconSettings
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "framer-motion";

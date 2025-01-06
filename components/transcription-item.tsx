@@ -4,7 +4,8 @@ interface TranscriptionItemProps {
       end_time: string;
       content: string;
     };
-    handleContentChange: (ev: any) => void;
+    //@ts-ignore
+    handleContentChange: (ev) => void;
   }
   
   const TranscriptionItem = ({
