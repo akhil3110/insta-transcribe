@@ -8,20 +8,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { signIn } from "next-auth/react"
 
-const  SignUp = ({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) => {
-
-  console.log(process.env.NEXT_PUBLIC_CALLBACK_URL_AFTER_SIGN_IN)
+const  SignUp = () => {
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
     <div className="w-full max-w-sm">
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6")}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -31,35 +24,9 @@ const  SignUp = ({
         </CardHeader>
         <CardContent>
           <form>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
-                </div>
-                <Input id="password" type="password" required />
-              </div>
-              <Button type="submit" className="w-full">
-                Login
-              </Button>
-            </div>
             <div className="flex flex-col gap-y-4 mt-4">
               <Button 
-                  onClick={() => {signIn("google", {callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL_AFTER_SIGN_IN})}} 
+                  onClick={() => {signIn("google", {callbackUrl: "/"})}} 
                   variant="outline" 
                   className="w-full"
                 >
@@ -67,7 +34,7 @@ const  SignUp = ({
                   Login with Google
                 </Button>
                 <Button 
-                  onClick={() => {signIn("github", {callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL_AFTER_SIGN_IN})}} 
+                  onClick={() => {signIn("github", {callbackUrl: "/"})}} 
                   variant="outline" 
                   className="w-full"
                 >
