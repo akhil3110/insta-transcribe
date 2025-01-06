@@ -15,7 +15,6 @@ export const getVideoSignedUrl =async (key: string) =>{
             Key: `${folderName}/${key}`
         })
 
-        //@ts-ignore
         const url = await getSignedUrl(s3,command, {expiresIn: 60*24})
 
         if(!url){

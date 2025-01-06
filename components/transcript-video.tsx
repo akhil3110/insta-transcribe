@@ -6,9 +6,9 @@ import useTranscriptionStore from "@/store/transcription-store";
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile,toBlobURL } from '@ffmpeg/util';
 
-//@ts-expect-error
+//@ts-expect-error: Uploading roboto file
 import roboto from "@/_fonts/Roboto-Regular.ttf"
-//@ts-expect-error
+//@ts-expect-error: Uploading robotoBold file
 import robotoBold from "@/_fonts/Roboto-Bold.ttf"
 import { useRouter } from "next/navigation";
 import { ToSrt } from "@/lib/toSrt";

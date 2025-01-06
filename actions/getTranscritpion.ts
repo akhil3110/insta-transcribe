@@ -1,14 +1,14 @@
 import s3 from "@/lib/awsS3Client";
 import { GetObjectCommand } from "@aws-sdk/client-s3"
 
-//@ts-ignore 
+//@ts-expect-error: stream type
 async function streamToString(stream) {
-    //@ts-ignore
+    //@ts-expect-error: chunks type
     const chunks = [];
     return new Promise((resolve, reject) => {
-       //@ts-ignore
+       //@ts-expect-error: chunks type
       stream.on('data', chunk => chunks.push(Buffer.from(chunk)));
-      //@ts-ignore
+      //@ts-expect-error: chunks type
       stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
       stream.on('error', reject);
     });

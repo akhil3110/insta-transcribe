@@ -19,9 +19,10 @@ const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
     setTranscriptions(transcriptiondata);
   }, []);
 
-  const updateTranscription = (index: number, property: string, ev: any) => {
+  //@ts-expect-error: type event
+  const updateTranscription = (index: number, property: string, ev) => {
     const newTranscription = [...transcriptions];
-    //@ts-expect-error
+    //@ts-expect-error: event error
     newTranscription[index][property] = ev.target.value;
     setTranscriptions(newTranscription);
   };
@@ -49,7 +50,7 @@ const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
             <TranscriptionItem
               key={key}
               item={item}
-              handleContentChange={(ev: any) =>
+              handleContentChange={(ev) =>
                 updateTranscription(key, "content", ev)
               }
             />

@@ -1,5 +1,5 @@
 
-//@ts-ignore
+//@ts-expect-error
 const secondsToFormatedTime = (time) => {
     const d = new Date(parseFloat(time) * 1000);
   return d.toISOString().slice(11,23).replace('.', ',');
