@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { signIn } from "next-auth/react"
+import Link from "next/link"
 
 const  SignUp = () => {
   return (
@@ -34,10 +35,10 @@ const  SignUp = () => {
                 </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Go back to 
-              <a href="/" className="underline underline-offset-4">
+              Go back to {" "}
+              <Link href="/" className="underline underline-offset-4">
                 Homepage
-              </a>
+              </Link>
             </div>
         </CardContent>
       </Card>
