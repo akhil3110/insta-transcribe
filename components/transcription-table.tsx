@@ -45,7 +45,7 @@ const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
       </div>
 
       <div className="w-full bg-gray-800 grid grid-cols-3 gap-4 p-4 rounded-md shadow-sm">
-        {transcriptions.length > 0 &&
+        {transcriptions && transcriptions.length > 0 &&
           transcriptions.map((item, key) => (
             <TranscriptionItem
               key={key}
