@@ -34,9 +34,9 @@ const  SignUp = () => {
                 </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              don&apos;t have an account{" "}
-              <a href="/sign-up" className="underline underline-offset-4">
-                Sign up
+              Go back to 
+              <a href="/" className="underline underline-offset-4">
+                Homepage
               </a>
             </div>
         </CardContent>

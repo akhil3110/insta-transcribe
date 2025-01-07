@@ -28,12 +28,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       return session
-    },
-    async redirect({ url, baseUrl }) {
-      // Redirect to the specified callback URL or fallback to baseUrl
-      return url.startsWith(baseUrl) ? url : baseUrl;
-    },
-
+    }
   }
 }
 )
