@@ -22,33 +22,43 @@ const UploadSection = () => {
         toast.error("Please log in first to upload a video.");
         return;
       }
-
+  
       const file = e.target?.files?.[0];
       if (!file) {
         toast.error("No file selected.");
         setLoading(false);
         return;
       }
-
+  
+      // Validate email existence
+      const userEmail = session.user?.email;
+      if (!userEmail) {
+        toast.error("Unable to retrieve user email. Please log in again.");
+        setLoading(false);
+        return;
+      }
+  
       setLoading(true);
+  
       const presignedUrl = await axios.post("/api/getPresignedUrl", {
         fileType: file.type,
       });
-
+  
       const res = await fetch(presignedUrl.data.url, {
         method: "PUT",
         body: file,
         headers: { "Content-Type": file.type },
       });
-
-      await StoreTranscription(presignedUrl.data.fileName, session.user?.email!)
-
+  
+      await StoreTranscription(presignedUrl.data.fileName, userEmail);
+  
       if (res.ok) {
         toast.success("File uploaded successfully!");
         setLoading(false);
         router.push(`/videos/${presignedUrl.data.videoId}`);
       } else {
         toast.error("Failed to upload the video.");
+        setLoading(false);
       }
     } catch (error) {
       console.error("Upload error:", error);
@@ -56,6 +66,7 @@ const UploadSection = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="relative max-w-3xl mx-auto mt-8">
