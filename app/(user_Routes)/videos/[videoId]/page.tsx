@@ -9,19 +9,15 @@ const VideoIdPage = async ({
 }: {
   params: Promise<{
     videoId: string;
-  }>
+  }>;
 }) => {
-  
-  
-  const videoId =  (await params).videoId
-
+  const videoId = (await params).videoId;
 
   if (!videoId) {
     return <div>Error: Video ID is missing!</div>;
   }
 
   try {
-
     const videoDetails = await getVideoDetails(videoId);
     if (!videoDetails) {
       return <div>Error: Video details not found!</div>;
@@ -29,31 +25,33 @@ const VideoIdPage = async ({
 
     const videoUrl = await getVideoSignedUrl(videoDetails.fileName);
 
-    const transcriptionResponse = await getTranscription(videoDetails.fileName,videoDetails.user.email)
-    if(transcriptionResponse){
-      
-    }
-    
+    const transcriptionResponse = await getTranscription(
+      videoDetails.fileName,
+      videoDetails.user.email
+    );
     if (!videoUrl) {
       return <div>Error: Unable to generate signed URL for the video.</div>;
     }
 
     return (
-      <div className="h-full w-full overflow-y-scroll">
+      <div className="h-full w-full overflow-y-scroll bg-gray-900 text-gray-100">
         <div className="grid grid-cols-3 w-full h-full">
-          <div className="col-span-3 md:col-span-2 h-full w-full order-last md:order-first ">
+          {/* Transcription Section */}
+          <div className="col-span-3 md:col-span-2 h-full w-full order-last md:order-first">
             <div className="w-full h-full p-5">
-              <div className="w-full text-center text-3xl font-extrabold ">Transctiptions</div>
-              <TranscriptionTable 
-                transcriptiondata = {transcriptionResponse}
-              />
+              <div className="w-full text-center text-3xl font-extrabold text-white mb-4">
+                Transcriptions
+              </div>
+              <TranscriptionTable transcriptiondata={transcriptionResponse} />
             </div>
           </div>
-          <div className="col-span-3 md:col-span-1 h-full w-full order-first md:order-none ">
+
+          {/* Video Section */}
+          <div className="col-span-3 md:col-span-1 h-full w-full order-first md:order-none bg-gray-800 p-4 rounded-lg shadow-lg">
             <TranscriptVideo
               videoUrl={videoUrl}
-              fileName = {videoDetails.fileName}
-            />     
+              fileName={videoDetails.fileName}
+            />
           </div>
         </div>
       </div>

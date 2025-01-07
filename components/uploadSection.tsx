@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import useLoadingStore from "@/store/loading-store";
+import { StoreTranscription } from "@/actions/StoreTranscriptionFile";
+
+
 
 const UploadSection = () => {
   const { setLoading } = useLoadingStore();
@@ -37,6 +40,8 @@ const UploadSection = () => {
         body: file,
         headers: { "Content-Type": file.type },
       });
+
+      await StoreTranscription(presignedUrl.data.fileName, session.user?.email!)
 
       if (res.ok) {
         toast.success("File uploaded successfully!");

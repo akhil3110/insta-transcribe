@@ -29,7 +29,7 @@ const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
 
   return (
     <>
-      <div className="w-full sticky top-0 grid grid-cols-3 bg-gray-900 text-gray-200 rounded-md p-4 text-base md:text-lg font-bold shadow-md border-b border-gray-700">
+      <div className="w-full sticky top-0 grid grid-cols-3 bg-gray-900 text-gray-200 rounded-md p-4 text-base md:text-lg font-bol shadow-md border-b border-t border-l border-r border-gray-600">
         {/* Start Time */}
         <div className="col-span-1 text-center text-sm md:text-base">Start Time</div>
 
