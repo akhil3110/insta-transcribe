@@ -1,5 +1,14 @@
-import React from 'react';
+"use client"
+import React, { useState } from 'react';
 import { Check } from 'lucide-react';
+import axios from 'axios';
+import Script from 'next/script';
+
+declare global {
+  interface Window {
+    RazorPay: any
+  }
+}
 
 interface PricingPlan {
   name: string;
@@ -13,12 +22,65 @@ interface PricingCardProps {
 }
 
 export function PricingCard({ plan }: PricingCardProps) {
+
+  const [isProcessing,setIsProcessing] = useState(false)
+  const AMOUNT = 100
+
+  const handlePayment = async () => {
+    setIsProcessing(true);
+  
+    try {
+      const response = await axios.post('/api/create-order');
+      const orderId = response.data.orderId;
+      
+      //@ts-ignore
+      if (!window.Razorpay) {
+        console.error('Razorpay SDK not loaded');
+        setIsProcessing(false);
+        return;
+      }
+  
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: AMOUNT * 100,
+        currency: 'INR',
+        name: 'Insta_Transcribe',
+        description: 'Upgrade Plan',
+        order_id: orderId,
+        handler: function (response: any) {
+          console.log('Payment Successful');
+          // Handle success of payment
+        },
+        prefill: {
+          name: 'Akhil',
+          email: 'akhil1659@gmail.com',
+          contact: '6546546546',
+        },
+        theme: {
+          color: '#3399cc',
+        },
+      };
+      //@ts-ignore
+      const rzpi1 = new window.Razorpay(options);
+      rzpi1.open();
+    } catch (error) {
+      console.error('Something went wrong: PRICING_CARD', error);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+  
+
   return (
     <div
       className={`relative rounded-2xl bg-white dark:bg-gray-800 p-8 shadow-lg ${
         plan.popular ? 'ring-2 ring-indigo-600' : ''
       }`}
     >
+      <Script
+        id="razorpay-checkout-js"
+        src="https://checkout.razorpay.com/v1/checkout.js"
+      />
       {plan.popular && (
         <span className="absolute top-0 -translate-y-1/2 bg-indigo-600 text-white px-3 py-0.5 text-sm font-semibold rounded-full">
           Popular
@@ -40,7 +102,11 @@ export function PricingCard({ plan }: PricingCardProps) {
           </li>
         ))}
       </ul>
-      <button className="flex mt-8 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+      <button 
+        onClick={handlePayment} 
+        disabled= {isProcessing} 
+        className="flex mt-8 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors"
+      >
         Get Started
       </button>
       </div>

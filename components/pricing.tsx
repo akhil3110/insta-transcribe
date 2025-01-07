@@ -1,5 +1,11 @@
 import { PricingCard } from "./pricing-card";
 
+declare global {
+  interface Window {
+    RazorPay: any
+  }
+}
+
 const pricingPlans = [
     {
       name: 'free',
