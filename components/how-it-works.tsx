@@ -31,7 +31,7 @@ const  TimelineDemo = () => {
             <div className="col-span-8 md:col-span-6 w-full h-full md:order-none order-first items-center">
               <div className='flex items-center h-full  justify-center md:gap-x-14'>
                 <div>
-                  <div className="hidden sm:block text-2xl font-extrabold text-center">
+                  <div className="hidden sm:block text-2xl font-extrabold text-center text-white">
                     Before
                   </div>
                   <div className="hidden mt-5 sm:block bg-gray-800/50 w-[240px] rounded-xl overflow-hidden z-50">
@@ -47,8 +47,8 @@ const  TimelineDemo = () => {
                 <div className='hidden sm:block my-auto  mx-2 md:mx-0'>
                   <Rocket />
                 </div>
-                <div>
-                  <div className="text-2xl hidden sm:block font-extrabold  text-center">
+                <div> 
+                  <div className="text-2xl hidden sm:block font-extrabold  text-center text-white">
                     After
                   </div>
                   <div className="hidden mt-5 sm:block bg-gray-800/50 w-[240px] rounded-xl overflow-hidden z-50">

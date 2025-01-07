@@ -66,7 +66,7 @@ const UploadSection = () => {
       setLoading(false);
     }
   };
-  
+    
 
   return (
     <div className="relative max-w-3xl mx-auto mt-8">

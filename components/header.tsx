@@ -33,7 +33,10 @@ const Header = () => {
                                 Log Out
                             </Button>
                         ) : (
-                            <Link href="/sign-in" className="border text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                            <Link 
+                                href="/sign-in" 
+                                className="border text-gray-300 hover:text-gray-900 dark:hover:text-white py-1 px-3 font-bold rounded-md "
+                            >
                                 Sign in
                             </Link>
                         )}
