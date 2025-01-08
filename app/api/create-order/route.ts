@@ -9,8 +9,6 @@ const razorpay = new RazorPay({
 
 export async function POST(request: NextRequest) {
     try {
-        
-
         const order = await razorpay.orders.create({
             amount: 100,
             currency: "INR",

@@ -31,7 +31,7 @@ const UserRoutesLayout = ({
         },
         {
           label: "Dashboard",
-          href: "#",
+          href: "/dashboard",
           icon: (
             <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
           ),
@@ -55,7 +55,7 @@ const UserRoutesLayout = ({
     return ( 
         <div
             className={cn(
-                "rounded-md flex flex-col md:flex-row w-full flex-1  border border-neutral-200 dark:border-neutral-700 overflow-hidden ",
+                " flex flex-col md:flex-row w-full flex-1  border border-neutral-200 dark:border-neutral-700 overflow-hidden ",
                 "h-screen" // for your use case, use `h-screen` instead of `h-[60vh]`
             )}
         >
@@ -88,7 +88,7 @@ const UserRoutesLayout = ({
                                 damping: 15,    // Control damping for a smoother effect
                                 }}
                             >
-                                <span className="pl-2 text-sm">LogOut</span>
+                                <span className="pl-2 text-sm text-white">LogOut</span>
                             </motion.div>
                         </div>
                         <SidebarLink
