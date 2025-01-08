@@ -35,7 +35,7 @@ const Dashboard = () => {
     const plan = session?.user?.plan || "free"
 
     return ( 
-        <div className="w-full h-full bg-gray-800 text-white">
+        <div className="w-full h-full bg-gray-900 text-white overflow-y-scroll">
             <div className="max-w-7xl mx-auto mt-5">
                 <div className="w-full flex justify-between ml-2 md:ml-0">
                     <div className="flex gap-x-2 text-lg font-semibold">
@@ -61,6 +61,17 @@ const Dashboard = () => {
                                 />
                             ))}
                         </div>
+                        <div className="grid grid-cols-4 gap-2">
+                            {allVideos?.length>0 && allVideos?.map((v) => (
+                                <VideoDetailsCard 
+                                    key={v.id}
+                                    id = {v.id}
+                                    fileName={v.fileName}
+                                    createdAt={v.createdAt}
+                                />
+                            ))}
+                        </div>
+                        
                     </div>
                 </div>
             </div>

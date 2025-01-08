@@ -24,7 +24,7 @@ const UserRoutesLayout = ({
     const links = [
         {
           label: "Home Page",
-          href: "#",
+          href: "/",
           icon: (
             <IconHome className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
           ),
