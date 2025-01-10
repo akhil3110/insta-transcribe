@@ -18,9 +18,11 @@ const Header = () => {
                 <div className="flex justify-between items-center py-4 ">
                     <div className="cursor-pointer" onClick={() =>router.push("/")} > <Logo/> </div>
                     <div className="flex items-center space-x-4">
-                        <Link href="/dashboard" className="hidden  sm:block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-                            Dashboard
-                        </Link>
+                        {session?.user?.email&& (
+                            <Link href="/dashboard" className="hidden  sm:block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                                Dashboard
+                            </Link>
+                        )}
                         <Link href="#pricing" className="hidden  sm:block text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
                             Pricing
                         </Link>

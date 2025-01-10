@@ -27,7 +27,7 @@ const TimelineDemo = () => {
             initial={{ x: -100, opacity: 0 }} // Start from left (off-screen)
             whileInView={{ x: 0, opacity: 1 }} // Move to normal position with full opacity
             transition={{ duration: 1, ease: "easeOut" }} // Slow movement with ease-out
-            viewport={{ amount: 0.3 }} // Trigger when 30% of the element is visible
+            viewport={{   amount: 0.3 }} // Trigger when 30% of the element is visible
           >
             <Timeline data={data} />
           </motion.div>
@@ -35,8 +35,8 @@ const TimelineDemo = () => {
           {/* Second motion.div - appears from right to left */}
           <motion.div
             className="col-span-8 md:col-span-6 w-full h-full md:order-none order-first items-center"
-            initial={{ x: 100, opacity: 0 }} // Start from right (off-screen)
-            whileInView={{ x: 0, opacity: 1 }} // Move to normal position with full opacity
+            initial={{ y: 100, opacity: 0 }} // Start from right (off-screen)
+            whileInView={{ y: 0, opacity: 1 }} // Move to normal position with full opacity
             transition={{ duration: 1, ease: "easeOut" }} // Slow movement with ease-out
             viewport={{  amount: 0.3 }} // Trigger when 30% of the element is visible
           >
