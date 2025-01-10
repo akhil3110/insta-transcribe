@@ -35,40 +35,40 @@ const TimelineDemo = () => {
           {/* Second motion.div - appears from right to left */}
           <motion.div
             className="col-span-8 md:col-span-6 w-full h-full md:order-none order-first items-center"
-            initial={{ y: 100, opacity: 0 }} // Start from right (off-screen)
-            whileInView={{ y: 0, opacity: 1 }} // Move to normal position with full opacity
+            initial={{ x: 100, opacity: 0 }} // Start from right (off-screen)
+            whileInView={{ x: 0, opacity: 1 }} // Move to normal position with full opacity
             transition={{ duration: 1, ease: "easeOut" }} // Slow movement with ease-out
             viewport={{  amount: 0.3 }} // Trigger when 30% of the element is visible
           >
-            <div className="flex items-center h-full justify-center md:gap-x-14">
+            <div className="flex flex-col md:flex-row items-center h-full justify-center md:gap-x-14">
               <div>
-                <div className="hidden sm:block text-2xl font-extrabold text-center text-white">
+                <div className=" text-2xl font-extrabold text-center text-white">
                   Before
                 </div>
-                <div className="hidden mt-5 sm:block bg-gray-800/50 w-[240px] rounded-xl overflow-hidden z-50">
+                <div className="mt-5 bg-gray-800/50 w-[240px] rounded-xl overflow-hidden z-50">
                   <video
                     src="/homepage_demo_video (1).mp4"
                     muted
                     autoPlay
                     loop
-                    style={{ width: "240px", height: "426px" }}
+                    className="w-[240px] h-[426px]"
                   />
                 </div>
               </div>
-              <div className="hidden sm:block my-auto mx-2 md:mx-0">
+              <div className="hidden sm:block my-auto mx-2 md:mx-0 text-white">
                 <Rocket />
               </div>
               <div>
-                <div className="text-2xl hidden sm:block font-extrabold text-center text-white">
+                <div className="text-2xl mt-8 md:mt-0 font-extrabold text-center text-white">
                   After
                 </div>
-                <div className="hidden mt-5 sm:block bg-gray-800/50 w-[240px] rounded-xl overflow-hidden z-50">
+                <div className="mt-5  bg-gray-800/50 w-[240px] rounded-xl overflow-hidden z-50">
                   <video
                     src="/transcribed_demo_video.mp4"
                     muted
                     autoPlay
                     loop
-                    style={{ width: "240px", height: "426px" }}
+                    className="w-[240px] h-[426px] aspect-auto"
                   />
                 </div>
               </div>
