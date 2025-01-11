@@ -3,7 +3,6 @@ import prisma from "@/lib/db";
 
 export const getAllVideosOfUser = async(id: string) => {
     try {
-        console.log(id)
         const allVideos = await prisma.video.findMany({
             where: {
                 UserId: id

@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { Smartphone } from "lucide-react";
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 
 const UserRoutesLayout = ({
@@ -49,6 +50,12 @@ const UserRoutesLayout = ({
     const [open,setOpen] = useState(false)
     const { data: session } = useSession()
     const router = useRouter()
+
+
+    if(!session){
+      toast.error("You need to Login first")
+      return router.push("/")
+    }
     
    
 

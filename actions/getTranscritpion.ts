@@ -20,9 +20,7 @@ export const getTranscription =async(fileName: string, email: string) => {
     try {
 
         const folderName =email.split('@')[0]
-
-        console.log(folderName)
-        console.log(fileName)
+        
         const getObjectCommand =new  GetObjectCommand({
             Bucket: 'bucket.akhilparmar.dev',
             Key: `${folderName}/${fileName}.transcription`
