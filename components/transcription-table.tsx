@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import TranscriptionItem from "./transcription-item";
 import useTranscriptionStore from "@/store/transcription-store";
+import useLoadingStore from "@/store/loading-store";
 
 interface TranscriptionTableProps {
   transcriptiondata: {
@@ -14,8 +15,10 @@ interface TranscriptionTableProps {
 
 const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
   const { transcriptions, setTranscriptions } = useTranscriptionStore();
+  const {setLoading} = useLoadingStore()
 
   useEffect(() => {
+    setLoading(false);
     setTranscriptions(transcriptiondata);
   }, []);
 

@@ -1,10 +1,12 @@
+"use client"
+import { useSession } from "next-auth/react";
 import { PricingCard } from "./pricing-card";
 
 
 
 const pricingPlans = [
     {
-      name: 'free',
+      name: 'Free',
       price: '0',
       features: [
         'Up to 2 videos per month',
@@ -39,6 +41,11 @@ const pricingPlans = [
 
 const Pricing = () => {
 
+    const {data: session} = useSession()
+
+    //@ts-expect-error: Plan exist type
+    const currentPlan = session?.user.plan
+
     return ( 
       <section id="pricing" className="py-20 bg-gradient-to-b from-white to-indigo-50 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,7 +55,7 @@ const Pricing = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {pricingPlans.map((plan) => (
-            <PricingCard key={plan.name} plan={plan} />
+            <PricingCard currentPlan={currentPlan} key={plan.name} plan={plan} />
           ))}
         </div>
       </div>

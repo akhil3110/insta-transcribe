@@ -5,6 +5,8 @@ import axios from 'axios';
 import Script from 'next/script';
 import { Button } from './ui/button';
 import toast from 'react-hot-toast';
+import { Plan } from '@prisma/client';
+import { cn } from '@/lib/utils';
 
 
 
@@ -18,9 +20,10 @@ interface PricingPlan {
 
 interface PricingCardProps {
   plan: PricingPlan;
+  currentPlan: string
 }
 
-export function PricingCard({ plan }: PricingCardProps) {
+export function PricingCard({ plan,currentPlan }: PricingCardProps) {
 
   const [isProcessing,setIsProcessing] = useState(false)
   
@@ -117,9 +120,11 @@ export function PricingCard({ plan }: PricingCardProps) {
       <Button
         onClick={handlePayment} 
         disabled= {isProcessing} 
-        className="flex mt-8 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors"
+        className={cn("flex mt-8 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors",
+                    currentPlan===plan.name && "cursor-not-allowed hover:bg-indigo-600"
+                  )}
       >
-        Get Started
+        {currentPlan===plan.name ? "Current Plan" : "Get Started"}
       </Button>
       </div>
     </div>
