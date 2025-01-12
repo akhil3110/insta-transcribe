@@ -56,7 +56,7 @@ const UploadSection = () => {
       if (res.ok) {
         toast.success("File uploaded successfully!");
         setLoading(false);
-        router.push(`/videos/${presignedUrl.data.videoId}`);
+        return router.push(`/videos/${presignedUrl.data.videoId}`);
       } else {
         toast.error("Failed to upload the video.");
         setLoading(false);
