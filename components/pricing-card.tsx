@@ -32,6 +32,8 @@ export function PricingCard({ plan }: PricingCardProps) {
       const response = await axios.post('/api/create-order');
       const orderId = response.data.orderId;
       
+
+      //@ts-expect-error: razorpay type
       if (!window.Razorpay) {
         console.error('Razorpay SDK not loaded');
         setIsProcessing(false);
@@ -45,7 +47,8 @@ export function PricingCard({ plan }: PricingCardProps) {
         name: 'Insta_Transcribe',
         description: 'Upgrade Plan',
         order_id: orderId,
-        handler: function (response: any) {
+        //@ts-expect-error: response type
+        handler: function (response) {
           console.log(response)
           toast.success('Payment Successful');
           // Handle success of payment
