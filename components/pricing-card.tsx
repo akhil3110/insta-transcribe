@@ -7,11 +7,7 @@ import { Button } from './ui/button';
 import toast from 'react-hot-toast';
 
 
-declare global {
-  interface Window {
-    Razorpay: any
-  }
-}
+
 
 interface PricingPlan {
   name: string;
@@ -63,7 +59,8 @@ export function PricingCard({ plan }: PricingCardProps) {
           color: '#3399cc',
         },
       };
-      //@ts-ignore
+
+      //@ts-expect-error: razorpay type error
       const rzpi1 = new window.Razorpay(options);
       rzpi1.open();
     } catch (error) {

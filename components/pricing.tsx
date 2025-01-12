@@ -1,10 +1,6 @@
 import { PricingCard } from "./pricing-card";
 
-declare global {
-  interface Window {
-    Razorpay: any
-  }
-}
+
 
 const pricingPlans = [
     {
