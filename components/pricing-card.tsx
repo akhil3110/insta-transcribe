@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Check } from 'lucide-react';
 import axios from 'axios';
 import Script from 'next/script';
+import { Button } from './ui/button';
 
 declare global {
   interface Window {
@@ -102,13 +103,13 @@ export function PricingCard({ plan }: PricingCardProps) {
           </li>
         ))}
       </ul>
-      <button 
+      <Button
         onClick={handlePayment} 
         disabled= {isProcessing} 
         className="flex mt-8 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors"
       >
         Get Started
-      </button>
+      </Button>
       </div>
     </div>
   );

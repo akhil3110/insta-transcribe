@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { getAllVideosOfUser } from "@/actions/getAllVideosOfUser";
 import VideoDetailsCard from "@/components/video-details-card";
 import { CircleUserRound } from "lucide-react";
@@ -65,9 +65,9 @@ const Dashboard = () => {
                 <div className="mt-10">
                     <div className="text-3xl font-extrabold">Your Videos:</div>
                     <div className="mt-5">
-                        <div className="grid grid-cols-4 gap-2">
-                            {allVideos?.length > 0 &&
-                                allVideos?.map((v) => (
+                        {allVideos?.length > 0 ? (
+                            <div className="grid grid-cols-4 gap-2">
+                                {allVideos.map((v) => (
                                     <VideoDetailsCard
                                         key={v.id}
                                         id={v.id}
@@ -75,7 +75,18 @@ const Dashboard = () => {
                                         createdAt={v.createdAt}
                                     />
                                 ))}
-                        </div>
+                            </div>
+                        ) : (
+                            <div className="text-center mt-10">
+                                <p className="text-lg text-gray-400">No videos found!</p>
+                                <Link
+                                    href="/"
+                                    className="text-blue-400 hover:underline text-sm mt-2 inline-block"
+                                >
+                                    Try transcribing a video
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

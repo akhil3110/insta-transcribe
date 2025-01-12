@@ -11,7 +11,7 @@ import prisma from "@/lib/db";
 
 export async function POST(req: Request) {
     try {
-        const { fileType } = await req.json();
+        const { fileType, fileName } = await req.json();
         const session = await auth();
 
         if (!session) {
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
         }
 
         const folderName = `${session.user.email?.split('@')[0]}`
-        const uniqueFileName = `${session.user?.id}-${Date.now()}.${fileType.split("/")[1]}`;
+        const uniqueFileName = `${fileName}.${session.user?.id}-${Date.now()}.${fileType.split("/")[1]}`;
 
         const command  = new PutObjectCommand({
             Bucket: "bucket.akhilparmar.dev",
@@ -47,6 +47,9 @@ export async function POST(req: Request) {
         
         const URL = await getSignedUrl(s3, command)
 
+        if(!URL){
+            return new NextResponse("Internal Server Error", { status: 500 });
+        }
 
         const video = await prisma.video.create({
             data: {

@@ -42,6 +42,7 @@ const UploadSection = () => {
   
       const presignedUrl = await axios.post("/api/getPresignedUrl", {
         fileType: file.type,
+        fileName: file.name
       });
   
       const res = await fetch(presignedUrl.data.url, {

@@ -31,6 +31,7 @@ const TranscriptVideo = ({
     const [outlineColor,setOutlineColor] = useState('#000000')
     const [progress, setProgress] = useState(1);
     const [isTranscribed,setIsTranscribed] = useState(false)
+    const [loading, setIsLoading] = useState(false)
     
     const videoRef = useRef(null)
     const ffmpegRef = useRef(new FFmpeg());
@@ -62,6 +63,7 @@ const TranscriptVideo = ({
 
     const transcode = async () => {
         router.refresh();
+        setIsLoading(true)
         setIsTranscribed(false)
         const ffmpeg = ffmpegRef.current;
         const srt = ToSrt(transcriptions);
@@ -99,6 +101,7 @@ const TranscriptVideo = ({
         toast.success("Adding Caption to Video is succesfull")
         setProgress(1)
         setIsTranscribed(true)
+        setIsLoading(false)
       }
 
     
@@ -172,7 +175,7 @@ const TranscriptVideo = ({
                     </div>
                 )}
             </div>
-            <Button onClick={transcode} className="font-bold text-lg" variant={'destructive'}>
+            <Button disabled={loading} onClick={transcode} className="font-bold text-lg" variant={'destructive'}>
                 <Rocket />
                 Apply Captions
             </Button>

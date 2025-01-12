@@ -8,7 +8,7 @@ interface VideoDetailsCardTypes {
 }
 
 const VideoDetailsCard = ({ id, fileName, createdAt }: VideoDetailsCardTypes) => {
-    const shortFileName = fileName.length > 15 ? fileName.slice(0, 15) + "..." : fileName;
+    const shortFileName = fileName.split(".")[0];
     const router = useRouter();
 
     return (
@@ -27,7 +27,7 @@ const VideoDetailsCard = ({ id, fileName, createdAt }: VideoDetailsCardTypes) =>
             {/* File Information */}
             <div className="flex items-center gap-3 mb-3">
                 <File className="text-white" size={28} />
-                <div className="text-lg font-semibold text-white truncate">{shortFileName}</div>
+                <div className="text-lg font-semibold text-white truncate overflow-x-hidden">{shortFileName}</div>
             </div>
             
             {/* Uploaded Date */}
