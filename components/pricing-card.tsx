@@ -70,7 +70,8 @@ export function PricingCard({ plan }: PricingCardProps) {
 
       //@ts-expect-error: razorpay type error
       const rzpi1 = new window.Razorpay(options);
-      rzpi1.on('payment.failed', function (response: any) {
+      //@ts-expect-error: response type
+      rzpi1.on('payment.failed', function (response) {
         alert(response.error.description);
        });
       rzpi1.open();
