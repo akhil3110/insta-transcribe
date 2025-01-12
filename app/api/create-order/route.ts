@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import {  NextResponse } from "next/server"
 import RazorPay from "razorpay"
 
 const razorpay = new RazorPay({
@@ -7,7 +7,7 @@ const razorpay = new RazorPay({
 })
 
 
-export async function POST(request: NextRequest) {
+export async function POST() {
     try {
         const order = await razorpay.orders.create({
             amount: 100,

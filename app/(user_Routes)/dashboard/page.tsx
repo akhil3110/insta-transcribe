@@ -19,17 +19,20 @@ const Dashboard = () => {
     const [allVideos, setAllVideos] = useState<videoType[]>([]);
 
     useEffect(() => {
-        if (session?.user?.id) {
-            (async () => {
-                const data = await getAllVideosOfUser(session?.user?.id!);
+        const fetchVideos = async () => {
+            if (session?.user?.id) {
+                const data = await getAllVideosOfUser(session.user.id);
                 if (data) {
                     setAllVideos(data);
                 }
-            })();
-        }
+            }
+        };
+    
+        fetchVideos();
     }, [session?.user?.id]);
+    
 
-    //@ts-ignore
+    // @ts-expect-error: plan type
     const plan = session?.user?.plan || "free";
 
     return (

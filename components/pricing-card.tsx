@@ -4,10 +4,12 @@ import { Check } from 'lucide-react';
 import axios from 'axios';
 import Script from 'next/script';
 import { Button } from './ui/button';
+import toast from 'react-hot-toast';
+
 
 declare global {
   interface Window {
-    RazorPay: any
+    Razorpay: any
   }
 }
 
@@ -34,7 +36,6 @@ export function PricingCard({ plan }: PricingCardProps) {
       const response = await axios.post('/api/create-order');
       const orderId = response.data.orderId;
       
-      //@ts-ignore
       if (!window.Razorpay) {
         console.error('Razorpay SDK not loaded');
         setIsProcessing(false);
@@ -49,7 +50,8 @@ export function PricingCard({ plan }: PricingCardProps) {
         description: 'Upgrade Plan',
         order_id: orderId,
         handler: function (response: any) {
-          console.log('Payment Successful');
+          console.log(response)
+          toast.success('Payment Successful');
           // Handle success of payment
         },
         prefill: {
