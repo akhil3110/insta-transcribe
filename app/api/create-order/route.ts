@@ -1,4 +1,4 @@
-import {  NextResponse } from "next/server"
+import {  NextRequest, NextResponse } from "next/server"
 import RazorPay from "razorpay"
 
 if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECERET) {
@@ -11,11 +11,16 @@ const razorpay = new RazorPay({
 })
 
 
-export async function POST() {
+export async function POST(request: NextRequest) {
     try {
+        const { amount, currency } = (await request.json()) as {
+            amount: string;
+            currency: string;
+        };
+
         const order = await razorpay.orders.create({
-            amount: 100,
-            currency: "INR",
+            amount: amount,
+            currency: currency,
             receipt: "receipt_" + Math.random().toString(36).substring(7)
         })
 

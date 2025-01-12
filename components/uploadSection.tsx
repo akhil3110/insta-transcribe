@@ -20,7 +20,7 @@ const UploadSection = () => {
     try {
       if (!session) {
         toast.error("Please log in first to upload a video.");
-        return;
+        return router.push("/sign-in");
       }
   
       const file = e.target?.files?.[0];

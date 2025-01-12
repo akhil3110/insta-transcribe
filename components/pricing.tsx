@@ -5,7 +5,7 @@ import { PricingCard } from "./pricing-card";
 const pricingPlans = [
     {
       name: 'free',
-      price: '$0',
+      price: '0',
       features: [
         'Up to 2 videos per month',
         'Basic transcription accuracy',
@@ -14,7 +14,7 @@ const pricingPlans = [
     },
     {
       name: 'Pro',
-      price: '$20',
+      price: '20',
       features: [
         'Up to 50 videos per month',
         'Enhanced accuracy',
@@ -26,7 +26,7 @@ const pricingPlans = [
     },
     {
       name: 'Enterprise',
-      price: '$99',
+      price: '99',
       features: [
         'Unlimited videos',
         'Highest accuracy',

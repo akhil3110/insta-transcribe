@@ -23,13 +23,18 @@ interface PricingCardProps {
 export function PricingCard({ plan }: PricingCardProps) {
 
   const [isProcessing,setIsProcessing] = useState(false)
-  const AMOUNT = 100
+  
 
   const handlePayment = async () => {
     setIsProcessing(true);
   
     try {
-      const response = await axios.post('/api/create-order');
+      const response = await axios.post('/api/create-order',{
+        amount: parseFloat(plan.price)*100,
+        currency: "USD"
+      });
+
+      
       const orderId = response.data.orderId;
       
 
@@ -42,13 +47,13 @@ export function PricingCard({ plan }: PricingCardProps) {
   
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: AMOUNT * 100,
-        currency: 'INR',
+        amount: parseFloat(plan.price) * 100,
+        currency: "USD",
         name: 'Insta_Transcribe',
-        description: 'Upgrade Plan',
+        description: `Upgrade Plan to ${plan.name}`,
         order_id: orderId,
         //@ts-expect-error: response type
-        handler: function (response) {
+        handler: async function (response) {
           console.log(response)
           toast.success('Payment Successful');
           // Handle success of payment
@@ -65,6 +70,9 @@ export function PricingCard({ plan }: PricingCardProps) {
 
       //@ts-expect-error: razorpay type error
       const rzpi1 = new window.Razorpay(options);
+      rzpi1.on('payment.failed', function (response: any) {
+        alert(response.error.description);
+       });
       rzpi1.open();
     } catch (error) {
       console.error('Something went wrong: PRICING_CARD', error);
@@ -92,7 +100,7 @@ export function PricingCard({ plan }: PricingCardProps) {
       <div className="text-center">
         <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{plan.name}</h3>
         <div className="mt-4">
-          <span className="text-4xl font-bold text-gray-900 dark:text-white">{plan.price}</span>
+          <span className="text-4xl font-bold text-gray-900 dark:text-white">$  {plan.price}</span>
           <span className="text-gray-600 dark:text-gray-400">/month</span>
         </div>
       </div>
