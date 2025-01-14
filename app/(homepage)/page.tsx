@@ -6,8 +6,11 @@ import Footer from "@/components/footer";
 import HowitWorks from "@/components/how-it-works";
 import UploadSection from "@/components/uploadSection";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import useModalStore from "@/store/modal-store";
 
 const Home = () => {
+
   return (
     <section className="relative overflow-hidden py-16 sm:py-24">
       <motion.div

@@ -1,4 +1,5 @@
-import { File, Play } from "lucide-react";
+import useModalStore from "@/store/modal-store";
+import { File, Play, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface VideoDetailsCardTypes {
@@ -11,9 +12,11 @@ const VideoDetailsCard = ({ id, fileName, createdAt }: VideoDetailsCardTypes) =>
     const shortFileName = fileName.split(".")[0];
     const router = useRouter();
 
+    const {onOpen} = useModalStore()
+
     return (
         <div
-            className="p-4 bg-gray-700 rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer hover:bg-gray-600 relative"
+            className="p-4 bg-gray-600 rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer hover:bg-gray-700 relative"
             onClick={() => { router.push(`/videos/${id}`); }}
         >
             {/* Video Thumbnail */}
@@ -31,8 +34,17 @@ const VideoDetailsCard = ({ id, fileName, createdAt }: VideoDetailsCardTypes) =>
             </div>
             
             {/* Uploaded Date */}
-            <div className="text-sm text-gray-400">
-                Uploaded on: {new Date(createdAt).toLocaleDateString()}
+            <div className="text-sm text-gray-400 flex justify-between">
+                <div>Uploaded on: {new Date(createdAt).toLocaleDateString()}</div>
+                <div
+                    onClick={(e) => {
+                        e.stopPropagation(); // Prevent event from bubbling up
+                        onOpen("delete-video", { videoId: id, fileName }); 
+                    }}
+                    className="hover:text-white rounded-full"
+                >
+                    <Trash className="h-4 w-4" />
+                </div>
             </div>
         </div>
     );

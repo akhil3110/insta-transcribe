@@ -26,7 +26,7 @@ interface TranscriptionItemProps {
         </div>
         <div className="col-span-1 flex items-center justify-center">
           <input
-            className="w-full py-2 px-4 bg-gray-700 text-gray-200 rounded-lg border border-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:bg-gray-800 placeholder-gray-400 outline-none transition-all shadow-md"
+            className="w-full py-2 px-4 text-center bg-gray-700 text-gray-200 rounded-lg border border-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 focus:bg-gray-800 placeholder-gray-400 outline-none transition-all shadow-md"
             defaultValue={item.content}
             onChange={handleContentChange}
             placeholder="Edit caption..."
