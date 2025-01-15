@@ -15,10 +15,11 @@ interface TranscriptionTableProps {
 
 const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
   const { transcriptions, setTranscriptions } = useTranscriptionStore();
-  const {setLoading} = useLoadingStore()
+  const {setLoading, setLoadingType} = useLoadingStore()
 
   useEffect(() => {
     setLoading(false);
+    setLoadingType("Loading")
     setTranscriptions(transcriptiondata);
   }, []);
 

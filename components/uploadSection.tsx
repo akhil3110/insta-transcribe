@@ -20,11 +20,12 @@ const UploadSection = () => {
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
+      let file
       if (!session) {
         return onOpen("login-warning")
       }
   
-      const file = e.target?.files?.[0];
+      file = e.target?.files?.[0];
       if (!file) {
         toast.error("No file selected.");
         setLoading(false);
@@ -59,9 +60,7 @@ const UploadSection = () => {
       
       setLoadingType("Storing Transcrib File")
       if (res.ok) {
-        toast.success("File uploaded successfully!");
         setLoadingType("Redirecting to video page")
-        setLoadingType("Loading")
         return router.push(`/videos/${presignedUrl.data.videoId}`);
       } else {
         toast.error("Failed to upload the video.");

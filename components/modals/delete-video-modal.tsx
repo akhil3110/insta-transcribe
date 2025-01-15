@@ -1,3 +1,4 @@
+"use client"
 import useModalStore from "@/store/modal-store";
 import {
   Dialog,
@@ -11,11 +12,13 @@ import { Button } from "../ui/button";
 import { deleteVideo } from "@/actions/deleteVideo";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const DeleteVideoModal = ({ onVideoDeleted }: { onVideoDeleted?: (id: string) => void }) => {
     const { isOpen, onClose, type, data } = useModalStore();
     const isModalOpen = isOpen && type === "delete-video";
     const router = useRouter();
+    const {data: session} = useSession()
   
     return (
       <Dialog open={isModalOpen} onOpenChange={onClose}>
@@ -31,8 +34,7 @@ const DeleteVideoModal = ({ onVideoDeleted }: { onVideoDeleted?: (id: string) =>
           <DialogFooter className="bg-neutral-900 px-6 py-4">
             <div className="flex items-center justify-between w-full">
               <Button
-                onClick={() => 
-                    onClose()}
+                onClick={() => onClose()}
                 variant="ghost"
                 className="bg-neutral-700 text-white hover:bg-neutral-600"
               >
@@ -40,8 +42,8 @@ const DeleteVideoModal = ({ onVideoDeleted }: { onVideoDeleted?: (id: string) =>
               </Button>
               <Button
                 onClick={async (e) => {
-                    e.preventDefault()
-                  const res = await deleteVideo(data?.videoId!);
+                  e.preventDefault()
+                  const res = await deleteVideo(data?.videoId!, session?.user?.email!  ,data?.fileName!);
   
                   if (res) {
                     toast.success("Video Deleted Successfully");
