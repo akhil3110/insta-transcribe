@@ -14,7 +14,7 @@ interface LoadingStore {
 const useLoadingStore = create<LoadingStore>((set) => ({
     loading: {
         isLoading: false,
-        loadingType: null
+        loadingType: "Loading"
     } , 
     setLoading: (value) => set( (state) => ({ loading: {...state.loading, isLoading: value}})),
     setLoadingType: (value) => set( (state) => ({ loading: {...state.loading, loadingType: value}}))

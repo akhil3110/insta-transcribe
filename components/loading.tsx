@@ -9,10 +9,10 @@ const Loading = () => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
       <div className="flex flex-col items-center text-center">
         {/* Spinner */}
-        <div className="w-16 h-16 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+        <div className="w-20 h-20 border-8 border-t-transparent animate-spin border-white rounded-full"></div>
         
         {/* Text */}
-        <p className="mt-4 text-white text-lg font-semibold">
+        <p className="mt-4 text-white text-3xl font-bold">
           {loading.loadingType !== null ? loading.loadingType : "Loading"}
           <span className="ml-2">
             {[0, 1, 2].map((i) => (

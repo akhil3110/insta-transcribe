@@ -40,6 +40,29 @@ const UploadSection = () => {
         setLoading(false);
         return;
       }
+
+      // Check video format (aspect ratio)
+    const isValidFormat = await new Promise((resolve) => {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+
+      video.onloadedmetadata = () => {
+        const aspectRatio = video.videoWidth / video.videoHeight;
+        resolve(aspectRatio < 1); // Vertical videos have aspect ratio < 1
+      };
+
+      video.onerror = () => {
+        resolve(false); // Invalid video format
+      };
+
+      video.src = URL.createObjectURL(file);
+    });
+
+    if (!isValidFormat) {
+      toast.error("Video is not in the desired format (vertical).");
+      setLoading(false);
+      return 
+    }
   
       setLoading(true);
       setLoadingType("Uploading File")
