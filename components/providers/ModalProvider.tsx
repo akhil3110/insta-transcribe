@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import DeleteVideoModal from "../modals/delete-video-modal";
 import LoginWarningModal from "../modals/login-warning-modal";
+import VideoFormatWarningModal from "../modals/video-format-warning-modal";
+
 
 const ModalProvider = () => {
 
@@ -17,6 +19,7 @@ const ModalProvider = () => {
         <>
            <DeleteVideoModal/> 
            <LoginWarningModal/>
+           <VideoFormatWarningModal />
         </>
      );
 }

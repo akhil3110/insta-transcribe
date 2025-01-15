@@ -59,7 +59,7 @@ const UploadSection = () => {
     });
 
     if (!isValidFormat) {
-      toast.error("Video is not in the desired format (vertical).");
+      onOpen("video-format-warning")
       setLoading(false);
       return 
     }

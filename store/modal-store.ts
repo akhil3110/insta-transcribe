@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type ModalType = "delete-video" | "login-warning"
+export type ModalType = "delete-video" | "login-warning" | "video-format-warning"
 
 interface ModalData {
     videoId?: string;

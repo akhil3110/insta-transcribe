@@ -8,8 +8,6 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { deleteVideo } from "@/actions/deleteVideo";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 const LoginWarningModal = () => {

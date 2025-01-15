@@ -19,18 +19,11 @@ export default function Providers({
   return (
     <SessionProvider>
     <ModalProvider />
-    <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-    >
     <Toaster />
         <RecoilRoot>
         {loading.isLoading && <Loading />}
           {children}
         </RecoilRoot>
-    </ThemeProvider>
     </SessionProvider>
   );
 }
