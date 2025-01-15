@@ -1,24 +1,45 @@
-// components/loading.tsx
 import useLoadingStore from "@/store/loading-store";
 import React from "react";
+import { motion } from "framer-motion";
 
 const Loading = () => {
+  const { loading } = useLoadingStore();
 
-    const {loading} = useLoadingStore()
-
-    return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-            <div className="text-center">
-                <div className="w-16 h-16 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
-                {loading.loadingType!==null && (
-                    <p className="mt-4 text-white text-lg font-semibold">{loading.loadingType}...</p>
-                )}
-                {loading.loadingType==null && (
-                    <p className="mt-4 text-white text-lg font-semibold">Loading...</p>
-                )}
-            </div>
-        </div>
-    );
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+      <div className="flex flex-col items-center text-center">
+        {/* Spinner */}
+        <div className="w-16 h-16 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
+        
+        {/* Text */}
+        <p className="mt-4 text-white text-lg font-semibold">
+          {loading.loadingType !== null ? loading.loadingType : "Loading"}
+          <span className="ml-2">
+            {[0, 1, 2].map((i) => (
+              <motion.span
+                key={i}
+                className="text-5xl font-semibold"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1 },
+                }}
+                initial="hidden"
+                animate="visible"
+                transition={{
+                  delay: i * 0.3,
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: 1.5,
+                }}
+              >
+                .
+              </motion.span>
+            ))}
+          </span>
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default Loading;

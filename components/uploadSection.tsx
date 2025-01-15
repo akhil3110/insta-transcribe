@@ -8,19 +8,20 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import useLoadingStore from "@/store/loading-store";
 import { StoreTranscription } from "@/actions/StoreTranscriptionFile";
+import useModalStore from "@/store/modal-store";
 
 
 
 const UploadSection = () => {
-  const { setLoading } = useLoadingStore();
+  const { setLoading, setLoadingType } = useLoadingStore();
   const router = useRouter();
   const { data: session } = useSession();
+  const { onOpen} = useModalStore()
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       if (!session) {
-        toast.error("Please log in first to upload a video.");
-        return router.push("/sign-in");
+        return onOpen("login-warning")
       }
   
       const file = e.target?.files?.[0];
@@ -31,6 +32,7 @@ const UploadSection = () => {
       }
   
       // Validate email existence
+      //@ts-ignore
       const userEmail = session.user?.email;
       if (!userEmail) {
         toast.error("Unable to retrieve user email. Please log in again.");
@@ -39,6 +41,7 @@ const UploadSection = () => {
       }
   
       setLoading(true);
+      setLoadingType("Uploading File")
   
       const presignedUrl = await axios.post("/api/getPresignedUrl", {
         fileType: file.type,
@@ -50,11 +53,15 @@ const UploadSection = () => {
         body: file,
         headers: { "Content-Type": file.type },
       });
-  
+      
+      setLoadingType("Transcribing Video")
       await StoreTranscription(presignedUrl.data.fileName, userEmail);
-  
+      
+      setLoadingType("Storing Transcrib File")
       if (res.ok) {
         toast.success("File uploaded successfully!");
+        setLoadingType("Redirecting to video page")
+        setLoadingType("Loading")
         return router.push(`/videos/${presignedUrl.data.videoId}`);
       } else {
         toast.error("Failed to upload the video.");

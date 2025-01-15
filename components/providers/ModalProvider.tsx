@@ -1,6 +1,7 @@
 "use client"
 import { useEffect, useState } from "react";
 import DeleteVideoModal from "../modals/delete-video-modal";
+import LoginWarningModal from "../modals/login-warning-modal";
 
 const ModalProvider = () => {
 
@@ -14,7 +15,8 @@ const ModalProvider = () => {
 
     return ( 
         <>
-           <DeleteVideoModal /> 
+           <DeleteVideoModal/> 
+           <LoginWarningModal/>
         </>
      );
 }
