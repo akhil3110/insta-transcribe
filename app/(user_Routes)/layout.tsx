@@ -9,7 +9,6 @@ import {
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Smartphone } from "lucide-react";
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
