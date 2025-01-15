@@ -43,12 +43,17 @@ const DeleteVideoModal = ({ onVideoDeleted }: { onVideoDeleted?: (id: string) =>
               <Button
                 onClick={async (e) => {
                   e.preventDefault()
-                  const res = await deleteVideo(data?.videoId!, session?.user?.email!  ,data?.fileName!);
+
+                  if (!data?.videoId || !session?.user?.email || !data?.fileName) {
+                    toast.error("Invalid data. Cannot delete video.");
+                    return;
+                  }
+                  const res = await deleteVideo(data?.videoId, session?.user?.email  ,data?.fileName);
   
                   if (res) {
                     toast.success("Video Deleted Successfully");
-                    //@ts-ignore
-                    onVideoDeleted(data?.videoId!); // Update the state
+                    //@ts-expect-error: onVideo type
+                    onVideoDeleted(data?.videoId); // Update the state
                   } else {
                     toast.error("Something went wrong");
                   }
