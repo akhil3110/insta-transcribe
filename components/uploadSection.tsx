@@ -20,7 +20,7 @@ const UploadSection = () => {
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
-      let file
+      let file = null
       if (!session) {
         return onOpen("login-warning")
       }
@@ -33,7 +33,6 @@ const UploadSection = () => {
       }
   
       // Validate email existence
-      //@ts-ignore
       const userEmail = session.user?.email;
       if (!userEmail) {
         toast.error("Unable to retrieve user email. Please log in again.");

@@ -10,7 +10,7 @@ const VideoFormatWarningModal = () => {
     const isModalOpen = isOpen && type === "video-format-warning";
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={isModalOpen} onOpenChange={onClose}>
         <DialogContent className="bg-neutral-800 text-white p-0 rounded-lg shadow-lg overflow-hidden">
           <DialogHeader className="pt-8 px-6">
             <div className="flex flex-col items-center">
