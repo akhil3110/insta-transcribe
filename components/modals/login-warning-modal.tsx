@@ -11,7 +11,7 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 
 const LoginWarningModal = () => {
-    const { isOpen, onClose, type, data } = useModalStore();
+    const { isOpen, onClose, type } = useModalStore();
     const isModalOpen = isOpen && type === "login-warning";
     const router = useRouter();
   

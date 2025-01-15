@@ -6,7 +6,7 @@ import useModalStore from "@/store/modal-store";
 
 const VideoFormatWarningModal = () => {
     
-    const { isOpen, onClose, type, data } = useModalStore();
+    const { isOpen, onClose, type } = useModalStore();
     const isModalOpen = isOpen && type === "video-format-warning";
 
     return (

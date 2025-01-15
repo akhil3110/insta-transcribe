@@ -5,9 +5,7 @@ import Pricing from "@/components/pricing";
 import Footer from "@/components/footer";
 import HowitWorks from "@/components/how-it-works";
 import UploadSection from "@/components/uploadSection";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import useModalStore from "@/store/modal-store";
+import { motion } from "framer-motion"; 
 
 const Home = () => {
 
