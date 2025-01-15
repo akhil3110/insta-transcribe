@@ -14,6 +14,7 @@ import { Smartphone } from "lucide-react";
 import { signOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { UserLogo, LogoIcon } from "@/components/userLogo";
 
 
 const UserRoutesLayout = ({
@@ -69,7 +70,7 @@ const UserRoutesLayout = ({
             <Sidebar open={open} setOpen={setOpen}>
                 <SidebarBody className="justify-between gap-10">
                     <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-                        {open ? <Logo /> : <LogoIcon />}
+                        {open ? <UserLogo /> : <LogoIcon />}
                         <div className="mt-8 flex flex-col gap-2">
                             {links.map((link, idx) => (
                                 <SidebarLink key={idx} link={link} />
@@ -123,38 +124,3 @@ const UserRoutesLayout = ({
  
 export default UserRoutesLayout;
 
-export const Logo = () => {
-    return (
-      <Link
-        href="/"
-        className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-      >
-        <div className="relative">
-            <Smartphone className="w-6 h-6 text-indigo-600" />
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 rounded-full animate-pulse" />
-        </div>
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="font-medium text-black dark:text-white whitespace-pre"
-        >
-          <span className="text-xl font-bold text-gray-900 dark:text-white">
-            Insta<span className="text-indigo-600">Transcribe</span>
-          </span>
-        </motion.span>
-      </Link>
-    );
-  };
-  export const LogoIcon = () => {
-    return (
-      <Link
-        href="#"
-        className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-      >
-        <div className="relative">
-            <Smartphone className="w-6 h-6 text-indigo-600" />
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 rounded-full animate-pulse" />
-        </div>
-      </Link>
-    );
-  };
