@@ -11,8 +11,6 @@ export const deleteVideo = async(id: string,email: string ,filename: string) => 
                 id: id
             }
         })
-
-        console.log(video)
         if(!video){
             return null
         }
