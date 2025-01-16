@@ -156,7 +156,7 @@ export function PricingCard({ plan, currentPlan, name, email }: PricingCardProps
           id="currency-select"
           value={currency}
           onChange={(e) => {
-            //@ts-expect-error
+            //@ts-expect-error: curreny type
             setCurrency(e.target.value)
           }}
           className="w-full p-2 border border-gray-300 rounded-lg text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
