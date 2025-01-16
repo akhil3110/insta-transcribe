@@ -7,6 +7,8 @@ import { Button } from "./ui/button";
 import toast from "react-hot-toast";
 
 import { cn } from "@/lib/utils";
+import { updatePlan } from "@/actions/updatePlan";
+import { Plan } from "@prisma/client";
 
 interface PricingPlan {
   name: string;
@@ -82,6 +84,18 @@ export function PricingCard({ plan, currentPlan, name, email }: PricingCardProps
         handler: async function (response) {
           console.log("Payment successful:", response);
           toast.success("Payment Successful");
+  
+          try {
+            const result = await updatePlan(email, plan.name as Plan); 
+            if (result) {
+              toast.success("Plan updated successfully!");
+            } else {
+              toast.error("Failed to update the plan.");
+            }
+          } catch (error) {
+            console.error("Error updating plan:", error);
+            toast.error("Failed to update the plan. Please contact support.");
+          }
         },
         prefill: {
           name: name,
@@ -96,6 +110,7 @@ export function PricingCard({ plan, currentPlan, name, email }: PricingCardProps
       const rzpi1 = new window.Razorpay(options);
       //@ts-expect-error: response type
       rzpi1.on("payment.failed", function (response) {
+        
         console.error("Payment failed:", response.error);
         toast.error("Payment Failed: " + response.error.description);
       });
