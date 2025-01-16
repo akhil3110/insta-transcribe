@@ -47,10 +47,9 @@ const UserRoutesLayout = ({
     ];
 
     const [open,setOpen] = useState(false)
-    const { data: session } = useSession()
     const router = useRouter()
 
-
+    const { data: session } = useSession()
     if(!session){
       toast.error("You need to Login first")
       return router.push("/")

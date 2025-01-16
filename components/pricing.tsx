@@ -16,7 +16,7 @@ const pricingPlans = [
     },
     {
       name: 'Pro',
-      price: '20',
+      price: '10',
       features: [
         'Up to 50 videos per month',
         'Enhanced accuracy',
@@ -28,7 +28,7 @@ const pricingPlans = [
     },
     {
       name: 'Enterprise',
-      price: '99',
+      price: '60',
       features: [
         'Unlimited videos',
         'Highest accuracy',
@@ -55,7 +55,13 @@ const Pricing = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {pricingPlans.map((plan) => (
-            <PricingCard currentPlan={currentPlan} key={plan.name} plan={plan} />
+            <PricingCard 
+              name={session?.user?.name!} 
+              email={session?.user?.email!} 
+              currentPlan={currentPlan} 
+              key={plan.name} 
+              plan={plan} 
+            />
           ))}
         </div>
       </div>
