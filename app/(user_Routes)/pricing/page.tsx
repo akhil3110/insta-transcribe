@@ -1,5 +1,4 @@
 import Pricing from "@/components/pricing";
-import {motion} from "framer-motion"
 
 const PricingDashboard = () => {
     return ( 
