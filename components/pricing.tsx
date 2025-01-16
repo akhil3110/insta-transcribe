@@ -1,6 +1,7 @@
 "use client"
 import { useSession } from "next-auth/react";
 import { PricingCard } from "./pricing-card";
+import { useRouter } from "next/navigation";
 
 
 
@@ -39,13 +40,14 @@ const pricingPlans = [
     },
   ];
 
-const Pricing = () => {
+const  Pricing = () => {
 
     const {data: session} = useSession()
+    const router = useRouter()
 
     //@ts-expect-error: Plan exist type
     const currentPlan = session?.user.plan
-
+    
     return ( 
       <section id="pricing" className="py-20 bg-gradient-to-b from-white to-indigo-50 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,11 +58,13 @@ const Pricing = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {pricingPlans.map((plan) => (
             <PricingCard 
-              name={session?.user?.name!} 
-              email={session?.user?.email!} 
-              currentPlan={currentPlan} 
-              key={plan.name} 
-              plan={plan} 
+              //@ts-expect-error: name type
+              name={session?.user?.name }
+              //@ts-expect-error: email type
+              email={session?.user?.email}
+              currentPlan={currentPlan}
+              key={plan.name}
+              plan={plan}
             />
           ))}
         </div>
