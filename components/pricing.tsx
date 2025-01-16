@@ -1,7 +1,7 @@
 "use client"
 import { useSession } from "next-auth/react";
 import { PricingCard } from "./pricing-card";
-import { useRouter } from "next/navigation";
+
 
 
 
@@ -43,7 +43,6 @@ const pricingPlans = [
 const  Pricing = () => {
 
     const {data: session} = useSession()
-    const router = useRouter()
 
     //@ts-expect-error: Plan exist type
     const currentPlan = session?.user.plan
