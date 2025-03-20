@@ -13,7 +13,7 @@ import useModalStore from "@/store/modal-store";
 
 
 const UploadSection = () => {
-  const { setLoading, setLoadingType } = useLoadingStore();
+  const { setLoading, setLoadingType, setLoadingSubHeading } = useLoadingStore();
   const router = useRouter();
   const { data: session } = useSession();
   const { onOpen} = useModalStore()
@@ -78,8 +78,13 @@ const UploadSection = () => {
       });
       
       setLoadingType("Transcribing Video")
+      //@ts-expect-error: setsubheading type
+      setLoadingSubHeading("(Please wait it may take some time,it may take 4-5 min)");
+      
       await StoreTranscription(presignedUrl.data.fileName, userEmail);
       
+      //@ts-expect-error: setSubheading null
+      setLoadingSubHeading(null)
       setLoadingType("Storing Transcrib File")
       if (res.ok) {
         setLoadingType("Redirecting to video page")

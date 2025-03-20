@@ -37,6 +37,9 @@ const Loading = () => {
             ))}
           </span>
         </p>
+        <p className="mt-1 text-white text-lg font-semibold">
+          {loading.loadingSubHeading}
+        </p>
       </div>
     </div>
   );

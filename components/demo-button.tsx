@@ -34,7 +34,7 @@ const DemoButton = () => {
             </p>
             {/* Download button */}
             <a
-              href="/Insta_Transcribe_demo_video.mp4" // Path to your public video file
+              href="/Insta_Transcribe_demo_video.mp4  " // Path to your public video file
               download="Insta_Transcribe_demo_video.mp4" // File name when downloaded
               className="px-4 py-2 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 inline-block"
             >
