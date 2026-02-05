@@ -1,64 +1,80 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import TranscriptionItem from "./transcription-item";
-import useTranscriptionStore from "@/store/transcription-store";
+import useTranscriptionStore, { TranscriptionType } from "@/store/transcription-store";
 import useLoadingStore from "@/store/loading-store";
+import useVideoPlaybackStore from "@/store/video-playback-store";
 
 interface TranscriptionTableProps {
-  transcriptiondata: {
-    start_time: string;
-    end_time: string;
-    content: string;
-  }[];
+  transcriptiondata: TranscriptionType[];
 }
 
 const TranscriptionTable = ({ transcriptiondata }: TranscriptionTableProps) => {
   const { transcriptions, setTranscriptions } = useTranscriptionStore();
-  const {setLoading, setLoadingType} = useLoadingStore()
+  const { setLoading, setLoadingType } = useLoadingStore();
+  const { currentTime } = useVideoPlaybackStore();
+  const activeRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setLoading(false);
-    setLoadingType("Loading")
+    setLoadingType("Loading");
     setTranscriptions(transcriptiondata);
-  }, []);
+  }, [setLoading, setLoadingType, setTranscriptions, transcriptiondata]);
 
-  //@ts-expect-error: type event
-  const updateTranscription = (index: number, property: string, ev) => {
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [currentTime]);
+
+  const activeIndex = useMemo(() => {
+    return transcriptions.findIndex((item) => {
+      const start = Number(item.start_time);
+      const end = Number(item.end_time);
+      return Number.isFinite(start) && Number.isFinite(end) && currentTime >= start && currentTime <= end;
+    });
+  }, [currentTime, transcriptions]);
+
+  const updateTranscription = (
+    index: number,
+    property: keyof TranscriptionType,
+    value: string
+  ) => {
     const newTranscription = [...transcriptions];
-    //@ts-expect-error: event error
-    newTranscription[index][property] = ev.target.value;
+    newTranscription[index] = {
+      ...newTranscription[index],
+      [property]: value,
+    };
     setTranscriptions(newTranscription);
   };
 
   return (
     <>
-      <div className="w-full sticky top-0 grid grid-cols-3 bg-gray-900 text-gray-200 rounded-md p-4 text-base md:text-lg font-bol shadow-md border-b border-t border-l border-r border-gray-600">
-        {/* Start Time */}
+      <div className="sticky top-0 z-10 grid w-full grid-cols-3 rounded-md border border-gray-600 bg-gray-900 p-4 text-base text-gray-200 shadow-md md:text-lg">
         <div className="col-span-1 text-center text-sm md:text-base">Start Time</div>
-
-        {/* End Time */}
         <div className="col-span-1 text-center text-sm md:text-base">End Time</div>
-
-        {/* Caption */}
-        <div className="col-span-1  
-         text-center text-sm md:text-base">
+        <div className="col-span-1 text-center text-sm md:text-base">
           Caption
-          <div className="ml-2 text-xs text-gray-400 italic">(editable)</div>
+          <div className="ml-2 text-xs italic text-gray-400">(editable)</div>
         </div>
       </div>
 
-      <div className="w-full bg-gray-800 grid grid-cols-3 gap-4 p-4 rounded-md shadow-sm">
-        {transcriptions && transcriptions.length > 0 &&
-          transcriptions.map((item, key) => (
-            <TranscriptionItem
-              key={key}
-              item={item}
-              handleContentChange={(ev) =>
-                updateTranscription(key, "content", ev)
-              }
-            />
-          ))}
+      <div className="grid w-full grid-cols-3 gap-4 rounded-md bg-gray-800 p-4 shadow-sm">
+        {transcriptions.map((item, index) => (
+          <TranscriptionItem
+            key={`${item.start_time}-${index}`}
+            item={item}
+            isActive={index === activeIndex}
+            activeRef={index === activeIndex ? (node) => { activeRef.current = node; } : undefined}
+            handleContentChange={(ev) =>
+              updateTranscription(index, "content", ev.target.value)
+            }
+          />
+        ))}
       </div>
     </>
   );

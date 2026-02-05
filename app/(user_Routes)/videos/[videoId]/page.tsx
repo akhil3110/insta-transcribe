@@ -4,6 +4,7 @@ import { getVideoSignedUrl } from "@/actions/getVideoSignedUrl";
 import TranscriptVideo from "@/components/transcript-video";
 import TranscriptionTable from "@/components/transcription-table";
 import TranscriptionTimeline from "@/components/transcription-timeline";
+import { normalizeTranscriptions } from "@/lib/normalize-transcriptions";
 
 const VideoIdPage = async ({
   params,
@@ -30,6 +31,7 @@ const VideoIdPage = async ({
       videoDetails.fileName,
       videoDetails.user.email
     );
+    const normalizedTranscriptions = normalizeTranscriptions(transcriptionResponse);
     if (!videoUrl) {
       return <div>Error: Unable to generate signed URL for the video.</div>;
     }
@@ -75,7 +77,7 @@ const VideoIdPage = async ({
             </div>
             <TranscriptionTimeline />
             <div className="max-h-[45vh] overflow-y-auto px-6 pb-6">
-              <TranscriptionTable transcriptiondata={transcriptionResponse} />
+              <TranscriptionTable transcriptiondata={normalizedTranscriptions} />
             </div>
           </div>
         </div>
