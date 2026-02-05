@@ -3,6 +3,7 @@ import { getVideoDetails } from "@/actions/getVideoDetails";
 import { getVideoSignedUrl } from "@/actions/getVideoSignedUrl";
 import TranscriptVideo from "@/components/transcript-video";
 import TranscriptionTable from "@/components/transcription-table";
+import TranscriptionTimeline from "@/components/transcription-timeline";
 
 const VideoIdPage = async ({
   params,
@@ -34,24 +35,48 @@ const VideoIdPage = async ({
     }
 
     return (
-      <div className="h-full w-full overflow-y-scroll bg-gray-900 text-gray-100">
-        <div className="grid grid-cols-3 w-full h-full">
-          {/* Transcription Section */}
-          <div className="col-span-3 md:col-span-2 h-full w-full order-last md:order-first">
-            <div className="w-full h-full p-5">
-              <div className="w-full text-center text-3xl font-extrabold text-white mb-4">
-                Transcriptions
+      <div className="min-h-screen w-full bg-gray-900 text-gray-100">
+        <div className="mx-auto flex h-full w-full max-w-6xl flex-col gap-6 px-4 py-6 lg:px-8">
+          <div className="rounded-3xl border border-gray-800 bg-gray-950/40 p-6 shadow-2xl">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs uppercase tracking-[0.4em] text-gray-500">
+                    Preview
+                  </div>
+                  <h1 className="text-2xl font-semibold text-white">
+                    Captioned Video
+                  </h1>
+                </div>
+                <div className="rounded-full border border-gray-700 bg-gray-900 px-4 py-2 text-xs text-gray-300">
+                  Live playback sync
+                </div>
               </div>
-              <TranscriptionTable transcriptiondata={transcriptionResponse} />
+              <TranscriptVideo
+                videoUrl={videoUrl}
+                fileName={videoDetails.fileName}
+              />
             </div>
           </div>
 
-          {/* Video Section */}
-          <div className="col-span-3 md:col-span-1 h-full w-full order-first md:order-none bg-gray-800 p-4 rounded-lg shadow-lg">
-            <TranscriptVideo
-              videoUrl={videoUrl}
-              fileName={videoDetails.fileName}
-            />
+          <div className="rounded-3xl border border-gray-800 bg-gray-950/60 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-gray-800 px-6 py-4">
+              <div>
+                <div className="text-xs uppercase tracking-[0.4em] text-gray-500">
+                  Timeline
+                </div>
+                <h2 className="text-xl font-semibold text-white">
+                  Caption Editor
+                </h2>
+              </div>
+              <div className="text-xs text-gray-400">
+                Playhead moves with the video
+              </div>
+            </div>
+            <TranscriptionTimeline />
+            <div className="max-h-[45vh] overflow-y-auto px-6 pb-6">
+              <TranscriptionTable transcriptiondata={transcriptionResponse} />
+            </div>
           </div>
         </div>
       </div>
