@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import {
@@ -8,7 +9,6 @@ import {
   IconSettings,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -19,32 +19,24 @@ const UserRoutesLayout = ({ children }: { children: React.ReactNode }) => {
     {
       label: "Home Page",
       href: "/",
-      icon: (
-        <IconHome className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <IconHome className="h-5 w-5" />,
     },
     {
       label: "Dashboard",
       href: "/dashboard",
-      icon: (
-        <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <IconBrandTabler className="h-5 w-5" />,
     },
     {
       label: "Settings",
       href: "#",
-      icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <IconSettings className="h-5 w-5" />,
     },
   ];
 
   const [open, setOpen] = useState(false);
   const router = useRouter();
-
   const { data: session, status } = useSession();
 
-  // Redirect if the user is not logged in
   useEffect(() => {
     if (status === "unauthenticated") {
       toast.error("You need to Login first");
@@ -53,78 +45,62 @@ const UserRoutesLayout = ({ children }: { children: React.ReactNode }) => {
   }, [status, router]);
 
   if (status === "loading") {
-    return <div className="h-full w-full bg-gray-900 flex justify-center items-center text-3xl font-extrabold">
-        Loading {""}
-        {[0, 1, 2].map((i) => (
-            <motion.span
-                key={i}
-                className="text-5xl font-semibold"
-                variants={{
-                    hidden: { opacity: 0 },
-                    visible: { opacity: 1 },
-                }}
-                initial="hidden"
-                animate="visible"
-                transition={{
-                    delay: i * 0.3,
-                    repeat: Infinity,
-                    repeatType: "loop",
-                    duration: 1.5,
-                  }}
-            >
-                .
-            </motion.span>))}
-    </div>;
+    return (
+      <div className="h-screen w-full flex justify-center items-center text-3xl font-bold">
+        Loading...
+      </div>
+    );
   }
 
   return (
-    <div
-      className={cn(
-        "flex flex-col md:flex-row w-full flex-1 border border-neutral-200 dark:border-neutral-700 overflow-hidden",
-        "h-screen" // for your use case, use `h-screen` instead of `h-[60vh]`
-      )}
-    >
+    <div className="flex h-screen w-full">
+      {/* SIDEBAR */}
       <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-10">
-          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        <SidebarBody className="justify-between">
+          {/* TOP */}
+          <div className="flex flex-col flex-1 overflow-y-auto">
             {open ? <UserLogo /> : <LogoIcon />}
+
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
                 <SidebarLink key={idx} link={link} />
               ))}
             </div>
           </div>
+
+          {/* BOTTOM */}
           <div className="flex flex-col gap-y-4">
-            <div
+            {/* LOGOUT */}
+            <button
               onClick={() => {
                 signOut({ callbackUrl: "/" });
                 router.push("/");
               }}
-              className="flex flex-row overflow-x-hidden"
+              className="flex items-center gap-2 text-white hover:text-red-400 transition"
             >
-              <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-              <motion.div
-                className="overflow-x-hidden flex flex-row cursor-pointer"
-                whileHover={{ x: 10 }} // Move right by 10px on hover
-                transition={{
-                  type: "spring", // Use a spring animation for bounce effect
-                  stiffness: 300, // Adjust stiffness for bounce intensity
-                  damping: 15, // Control damping for a smoother effect
-                }}
-              >
-                <span className="pl-2 text-sm text-white">LogOut</span>
-              </motion.div>
-            </div>
+              <IconArrowLeft className="h-5 w-5 flex-shrink-0" />
+
+              {/* TEXT ONLY WHEN OPEN */}
+              {open && (
+                <motion.span
+                  initial={{ opacity: 0, x: -5 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="text-sm whitespace-nowrap"
+                >
+                  Logout
+                </motion.span>
+              )}
+            </button>
+
+            {/* USER */}
             <SidebarLink
               link={{
-                label: `${session?.user?.name}`,
+                label: open ? session?.user?.name ?? "User" : "",
                 href: "#",
                 icon: (
                   <img
                     src={session?.user?.image || undefined}
-                    className="h-7 w-7 flex-shrink-0 rounded-full"
-                    width={50}
-                    height={50}
+                    className="h-7 w-7 rounded-full"
                     alt="Avatar"
                   />
                 ),
@@ -133,7 +109,11 @@ const UserRoutesLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </SidebarBody>
       </Sidebar>
-      {children}
+
+      {/* MAIN CONTENT */}
+      <main className="flex-1 overflow-y-auto">
+        {children}
+      </main>
     </div>
   );
 };
