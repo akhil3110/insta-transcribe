@@ -8,9 +8,9 @@ import VideoEditor from "@/components/video-editor";
 const VideoIdPage = async ({
   params,
 }: {
-  params: { videoId: string };
+   params: Promise<{ videoId: string }>
 }) => {
-  const videoId = params.videoId;
+  const {videoId} = await params;
 
   if (!videoId) {
     return <div>Error: Video ID is missing!</div>;
