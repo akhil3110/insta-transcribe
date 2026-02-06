@@ -19,7 +19,6 @@ interface TranscriptVideoNewProps{
     videoUrl: string
     fileName: string
     videoRef : React.RefObject<HTMLVideoElement | null> 
-    progress: number
     setProgress: React.Dispatch<React.SetStateAction<number>>
 }
 
@@ -27,7 +26,6 @@ const TranscriptVideoNew = ({
     videoUrl,
     fileName,
     videoRef,
-    progress,
     setProgress
 }: TranscriptVideoNewProps) => {
 

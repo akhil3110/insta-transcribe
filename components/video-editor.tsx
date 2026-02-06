@@ -168,10 +168,15 @@ export default function VideoEditor({
 
   /* ================= ACTIONS ================= */
   const togglePlay = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.paused ? v.play() : v.pause();
-  };
+  const v = videoRef.current;
+  if (!v) return;
+
+  if (v.paused) {
+    v.play();
+  } else {
+    v.pause();
+  }
+};
 
   const seek = (t: number) => {
     const v = videoRef.current;
@@ -252,7 +257,7 @@ export default function VideoEditor({
           </span>
          </div>
          <div className="">
-            <TranscriptVideoNew fileName={filename} videoUrl={videoUrl} videoRef={videoRef} progress={progress} setProgress={setProgress}  />
+            <TranscriptVideoNew fileName={filename} videoUrl={videoUrl} videoRef={videoRef} setProgress={setProgress}  />
          </div>
         </div>
       </div>
