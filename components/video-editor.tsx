@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import useTranscriptionStore from "@/store/transcription-store";
-import TranscriptVideo from "./transcript-video";
 import TranscriptVideoNew from "./transcript-video-new";
 
 interface Transcription {
