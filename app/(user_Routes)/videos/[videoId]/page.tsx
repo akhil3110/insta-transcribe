@@ -1,6 +1,7 @@
 import { getTranscription } from "@/actions/getTranscritpion";
 import { getVideoDetails } from "@/actions/getVideoDetails";
 import { getVideoSignedUrl } from "@/actions/getVideoSignedUrl";
+import OldVersionPopup from "@/components/old-versoin-popup";
 import VideoEditor from "@/components/video-editor";
 
 
@@ -31,10 +32,14 @@ const VideoIdPage = async ({
   );
 
   return (
-    <VideoEditor
-      videoUrl={videoUrl}
-      transcriptiondata={transcriptionResponse ?? []}
-    />
+    <>
+      <OldVersionPopup videoId={videoId} />
+      <VideoEditor
+        videoUrl={videoUrl}
+        transcriptiondata={transcriptionResponse ?? []}
+        filename= {videoDetails.fileName}
+      />
+    </>
   );
 };
 

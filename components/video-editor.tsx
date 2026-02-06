@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import useTranscriptionStore from "@/store/transcription-store";
+import TranscriptVideo from "./transcript-video";
+import TranscriptVideoNew from "./transcript-video-new";
 
 interface Transcription {
   start_time: string;
@@ -23,9 +25,11 @@ const formatTime = (t: string | number) => {
 export default function VideoEditor({
   videoUrl,
   transcriptiondata,
+  filename
 }: {
   videoUrl: string;
   transcriptiondata: Transcription[];
+  filename: string
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const timelineRef = useRef<HTMLDivElement | null>(null);
@@ -39,6 +43,7 @@ export default function VideoEditor({
     useState<number | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [progress, setProgress] = useState(1);
 
   /* ================= INIT STORE ================= */
   useEffect(() => {
@@ -201,12 +206,34 @@ export default function VideoEditor({
       {/* VIDEO */}
       <div className="flex justify-center w-full py-1.5 bg-neutral-900 border-b border-neutral-800">
         <div className="aspect-[9/16]  max-w-[320px] max-h-[420px] bg-black rounded-md overflow-hidden">
-          <video
-            ref={videoRef}
-            src={videoUrl}
-            className="w-full h-full object-cover"
-            controls
-          />
+          <div className="relative" style={{ width: "240px", height: "426px" }}>
+                <video
+                    ref={videoRef}
+                    controls
+                    style={{ width: "100%", height: "100%" }}
+                    className="rounded-lg"
+                />
+                {progress && progress < 1 && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-lg">
+                        <div className="flex flex-col gap-y-2 w-full items-center">
+                        <div className="w-full text-center">
+                            Loading ...
+                        </div>
+                        <div className="relative w-[80%]">
+                            <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-gradient-to-r from-blue-500 to-blue-700"
+                                    style={{ width: `${progress * 100}%` }}
+                                />
+                            </div>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <h3 className="text-red-700 text-sm font-bold">{Math.round(progress * 100)}%</h3>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                )}
+            </div>  
         </div>
       </div>
 
@@ -226,7 +253,7 @@ export default function VideoEditor({
           </span>
          </div>
          <div className="">
-          a
+            <TranscriptVideoNew fileName={filename} videoUrl={videoUrl} videoRef={videoRef} progress={progress} setProgress={setProgress}  />
          </div>
         </div>
       </div>
