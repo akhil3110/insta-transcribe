@@ -13,12 +13,14 @@ import { deleteVideo } from "@/actions/deleteVideo";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 const DeleteVideoModal = ({ onVideoDeleted }: { onVideoDeleted?: (id: string) => void }) => {
     const { isOpen, onClose, type, data } = useModalStore();
     const isModalOpen = isOpen && type === "delete-video";
     const router = useRouter();
     const {data: session} = useSession()
+    const [isLoading, setIsLoading] = useState(false)
   
     return (
       <Dialog open={isModalOpen} onOpenChange={onClose}>
@@ -43,6 +45,7 @@ const DeleteVideoModal = ({ onVideoDeleted }: { onVideoDeleted?: (id: string) =>
               <Button
                 onClick={async (e) => {
                   e.preventDefault()
+                  setIsLoading(true)
 
                   if (!data?.videoId || !session?.user?.email || !data?.fileName) {
                     toast.error("Invalid data. Cannot delete video.");
@@ -57,10 +60,12 @@ const DeleteVideoModal = ({ onVideoDeleted }: { onVideoDeleted?: (id: string) =>
                   } else {
                     toast.error("Something went wrong");
                   }
-  
+                  
+                  setIsLoading(false)
                   router.refresh();
                   onClose();
                 }}
+                disabled={isLoading}
                 className="bg-red-600 text-white hover:bg-red-500"
               >
                 Confirm

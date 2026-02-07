@@ -1,102 +1,120 @@
 "use client";
+
 import { getAllVideosOfUser } from "@/actions/getAllVideosOfUser";
 import VideoDetailsCard from "@/components/video-details-card";
-import { CircleUserRound } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import Link from "next/link";
 import DeleteVideoModal from "@/components/modals/delete-video-modal";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-interface videoType {
-    id: string;
-    fileName: string;
-    UserId: string;
-    createdAt: Date;
-    updatedAt: Date;
+interface VideoType {
+  id: string;
+  fileName: string;
+  createdAt: Date;
 }
 
-
-const Dashboard = () => {
+export default function Dashboard() {
   const { data: session } = useSession();
-  const [allVideos, setAllVideos] = useState<videoType[]>([]);
+  const [videos, setVideos] = useState<VideoType[]>([]);
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      if (session?.user?.id) {
-        const data = await getAllVideosOfUser(session.user.id);
-        if (data) {
-          setAllVideos(data);
-        }
-      }
-    };
-
-    fetchVideos();
+    if (!session?.user?.id) return;
+    getAllVideosOfUser(session.user.id).then((data) => data && setVideos(data));
   }, [session?.user?.id]);
 
-  const handleVideoDeleted = (videoId: string) => {
-    setAllVideos((prevVideos) => prevVideos.filter((video) => video.id !== videoId));
+  const handleVideoDeleted = (id: string) => {
+    setVideos((prev) => prev.filter((v) => v.id !== id));
   };
 
-  // @ts-expect-error: plan type
+  // @ts-expect-error
   const plan = session?.user?.plan || "free";
 
   return (
-    <div className="w-full h-full bg-gray-900 text-white overflow-y-scroll pb-10">
-      <div className="max-w-7xl mx-auto mt-5">
-        {/* Plan Info and User Details */}
-        <div className="bg-gray-800 p-4 rounded-md mb-5 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-gray-700 rounded-full flex items-center justify-center">
-              <CircleUserRound className="w-6 h-6 text-gray-300" />
-            </div>
-            <div>
-              <div className="text-lg font-bold">{session?.user?.name || "User"}</div>
-              <div className="text-sm text-gray-400">{session?.user?.email}</div>
-            </div>
-          </div>
-          <div className="text-right">
-            <div className="text-lg font-bold">
-              Current Plan: <span className="text-blue-500">{plan}</span>
-            </div>
-            <Link href="/pricing" className="text-blue-400 hover:underline text-sm">
-              Upgrade Plan
-            </Link>
-          </div>
+    <div className="min-h-screen bg-slate-900 text-slate-100">
+      <div className="mx-auto max-w-7xl px-6 py-8 space-y-8">
+
+        {/* Header */}
+        <div>
+          <h1 className="text-3xl font-semibold">
+            Dashboard
+          </h1>
+          <p className="text-slate-400 mt-1">
+            Manage and access your transcribed videos
+          </p>
         </div>
 
-        {/* Videos Section */}
-        <div className="mt-10">
-          <div className="text-3xl font-extrabold">Your Videos:</div>
-          <div className="mt-5">
-            {allVideos?.length > 0 ? (
-              <div className="grid grid-cols-4 gap-2">
-                {allVideos.map((v) => (
-                  <VideoDetailsCard
-                    key={v.id}
-                    id={v.id}
-                    fileName={v.fileName}
-                    createdAt={v.createdAt}
-                  />
-                ))}
+        {/* User / Plan Card */}
+        <Card className="bg-slate-800 border border-slate-700 shadow-sm">
+          <div className="flex items-center justify-between p-6">
+            <div className="flex items-center gap-4">
+              <Avatar className="bg-slate-700">
+                <AvatarFallback className="text-slate-200">
+                  {session?.user?.name?.[0] ?? "U"}
+                </AvatarFallback>
+              </Avatar>
+
+              <div>
+                <p className="font-medium">
+                  {session?.user?.name}
+                </p>
+                <p className="text-sm text-slate-400">
+                  {session?.user?.email}
+                </p>
               </div>
-            ) : (
-              <div className="text-center mt-10">
-                <p className="text-lg text-gray-400">No videos found!</p>
-                <Link
-                  href="/"
-                  className="text-blue-400 hover:underline text-sm mt-2 inline-block"
-                >
-                  Try transcribing a video
+            </div>
+
+            <div className="text-right space-y-1">
+              <Badge className="bg-slate-700 text-slate-200">
+                {plan.toUpperCase()} PLAN
+              </Badge>
+              <div>
+                <Link href="/pricing">
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="text-blue-400 px-0"
+                  >
+                    Upgrade
+                  </Button>
                 </Link>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        </Card>
+
+        <Separator className="bg-slate-700" />
+
+        {/* Videos */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-semibold">
+            Your Videos
+          </h2>
+
+          {videos.length === 0 ? (
+            <Card className="bg-slate-800 border border-slate-700 p-10 text-center">
+              <p className="text-slate-400">
+                You haven’t transcribed any videos yet.
+              </p>
+              <Link href="/">
+                <Button className="mt-4">Upload your first video</Button>
+              </Link>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {videos.map((video) => (
+                <VideoDetailsCard key={video.id} {...video} />
+              ))}
+            </div>
+          )}
+        </section>
       </div>
+
       <DeleteVideoModal onVideoDeleted={handleVideoDeleted} />
     </div>
   );
-};
-
-export default Dashboard;
-
+}
